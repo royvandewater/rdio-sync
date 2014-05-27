@@ -29,6 +29,10 @@
   },
   "devDependencies": {
     "watch": "~0.10.0",
-    "nodemon": "~1.0.20"
+    "nodemon": "~1.0.20",
+    "sinon-chai": "~2.5.0",
+    "chai": "~1.9.1",
+    "sinon": "~1.10.0",
+    "mocha": "~1.19.0"
   }
 }

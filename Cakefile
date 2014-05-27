@@ -6,6 +6,7 @@ TEST_ARGS = [
   "--compilers", "coffee:coffee-script/register"
   "--require", "coffee-script"
   "--require", "test/test_helper.coffee"
+  "--recursive"
   "--growl"
 ]
 
