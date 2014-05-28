@@ -1,11 +1,26 @@
+_ = require 'underscore'
+
 class exports.Account
   constructor: (attributes, options={}) ->
-    @table = new options.table attributes
+    @table = new Account.table()
+    @set(attributes ? {})
+
+  fetch: (callback=->) =>
+    Account.table.get @id, (error, @table) =>
+      callback error, this
+
+  get: (attribute) =>
+    @table[attribute]
 
   save: (callback=->) =>
-    @table.save (error) =>
-      throw error if error?
+    @table.save (error, table) =>
       @id = @table.id
-      callback()
+      callback error, this
 
-exports.schema = {}
+  set: (attributes) =>
+    @id = attributes.id if attributes.id?
+    _.each attributes, (value, key) =>
+      @table[key] = value
+
+exports.schema =
+  username: String

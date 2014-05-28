@@ -5,15 +5,39 @@ describe 'Account', ->
   beforeEach (callback=->) ->
     orm.connect "mysql://root:@localhost/rdio_sync_test", (err, @db) =>
       throw err if err?
-      @AccountTable = @db.define 'account', schema
+      Account.table = @db.define 'accounts', schema
       @db.sync callback
+
+  afterEach (callback=->) ->
+    Account.table.drop callback
+
+  describe 'instantiate', ->
+    it 'should remember its attributes', ->
+      @sut = new Account username: 'royvandewater'
+      expect(@sut.get 'username').to.equal 'royvandewater'
 
   describe 'save', ->
     it 'should set the id on the account', (callback=->) ->
-      @sut = new Account {}, table: @AccountTable
+      @sut = new Account
       @sut.save =>
+        throw error if error?
         expect(@sut.id).to.exist
         callback()
+
+  describe 'fetch', ->
+    it 'should fetch the model attributes', (callback=->) ->
+      @sut = new Account username: 'somethingelse'
+      @sut.save (error) =>
+        throw error if error?
+
+        @sut = new Account id: @sut.id
+        @sut.fetch (error) =>
+          throw error if error?
+          expect(@sut.get 'username').to.equal 'somethingelse'
+          callback()
+
+
+
 
 
     # t.string   "username"
