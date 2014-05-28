@@ -25,29 +25,26 @@ describe 'Account', ->
         callback()
 
   describe 'fetch', ->
-    it 'should fetch the model attributes', (callback=->) ->
-      @sut = new Account username: 'somethingelse'
-      @sut.save (error) =>
-        throw error if error?
+    describe 'when some attributes are saved', ->
+      beforeEach (callback) ->
+        @attributes =
+          username: 'somethingelse'
+          rdio_key: 'foo'
+          rdio_secret: 'bar'
+          number_of_tracks_to_sync: 2
+          auto_sync: true
+          last_synced_at: new Date('2014-05-04')
+          sync_type: 'both'
+          session_token: '1234'
 
+        @sut = new Account _.clone(@attributes)
+        @sut.save callback
+
+      it 'should fetch the attributes', (callback=->) ->
         @sut = new Account id: @sut.id
         @sut.fetch (error) =>
           throw error if error?
-          expect(@sut.get 'username').to.equal 'somethingelse'
+
+          _.each @attributes, (value, key) =>
+            expect(@sut.get key).to.deep.equal value
           callback()
-
-
-
-
-
-    # t.string   "username"
-    # t.string   "rdio_key"
-    # t.string   "rdio_secret"
-    # t.datetime "created_at"
-    # t.datetime "updated_at"
-    # t.integer  "number_of_tracks_to_sync"
-    # t.boolean  "auto_sync",                default: false
-    # t.datetime "last_synced_at"
-    # t.string   "sync_type"
-    # t.string   "session_token"
-

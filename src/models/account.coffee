@@ -23,4 +23,14 @@ class exports.Account
       @table[key] = value
 
 exports.schema =
-  username: String
+  username:      {type: 'text'}
+  rdio_key:      {type: 'text'}
+  rdio_secret:   {type: 'text'}
+  session_token: {type: 'text'}
+  sync_type:     {type: 'text'}
+  auto_sync:     {type: 'boolean'}
+  number_of_tracks_to_sync: {type: 'number'}
+  last_synced_at: {type: 'date', time: true}
+  # last_synced_at: '2014-05-2'
+  # sync_type: 'both'
+  # session_token: '1234'
