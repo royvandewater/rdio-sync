@@ -1,11 +1,11 @@
-{Account,schema} = require '../../src/models/account'
+Account = require '../../src/models/account'
 orm     = require 'orm'
 
 describe 'Account', ->
   beforeEach (callback=->) ->
     orm.connect "mysql://root:@localhost/rdio_sync_test", (err, @db) =>
       throw err if err?
-      Account.table = @db.define 'accounts', schema
+      Account.table = @db.define 'accounts', Account.schema
       @db.sync callback
 
   afterEach (callback=->) ->
