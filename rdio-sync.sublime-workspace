@@ -4,8 +4,16 @@
 		"selected_items":
 		[
 			[
+				"show",
+				"show_template"
+			],
+			[
+				"acco",
+				"accounts"
+			],
+			[
 				"rdio",
-				"rdio_token"
+				"rdio_secret"
 			],
 			[
 				"rdi",
@@ -391,15 +399,15 @@
 			"file": "src/controllers/accounts_controller.coffee",
 			"settings":
 			{
-				"buffer_size": 1136,
+				"buffer_size": 1444,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/models/account.coffee",
+			"file": "src/templates/accounts/show.eco",
 			"settings":
 			{
-				"buffer_size": 952,
+				"buffer_size": 21,
 				"line_ending": "Unix"
 			}
 		},
@@ -407,7 +415,7 @@
 			"file": "src/application.coffee",
 			"settings":
 			{
-				"buffer_size": 1295,
+				"buffer_size": 1358,
 				"line_ending": "Unix"
 			}
 		},
@@ -423,7 +431,15 @@
 			"file": "test/models/account_spec.coffee",
 			"settings":
 			{
-				"buffer_size": 1505,
+				"buffer_size": 2156,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/models/account.coffee",
+			"settings":
+			{
+				"buffer_size": 1047,
 				"line_ending": "Unix"
 			}
 		}
@@ -571,15 +587,15 @@
 	},
 	"file_history":
 	[
+		"/Users/roy/Projects/rdio-sync/src/models/account.coffee",
+		"/Users/roy/Projects/rdio-sync/public/styles.css",
 		"/Users/roy/Projects/rdio-sync/lib/rdio.js",
 		"/Users/roy/Projects/rdio-sync/README.md",
 		"/Users/roy/Projects/rdio-sync/test/controllers/accounts_controller_spec.coffee",
-		"/Users/roy/Projects/rdio-sync/public/styles.css",
 		"/Users/roy/Projects/rdio-sync/Cakefile",
 		"/Users/roy/Projects/rdio-sync/src/application.coffee",
 		"/Users/roy/Projects/rdio-sync/public/index.html",
 		"/Users/roy/Projects/rdio-sync/index.html",
-		"/Users/roy/Projects/rdio-sync/src/models/account.coffee",
 		"/Users/roy/Projects/rdio-sync/public/application.html",
 		"/Users/roy/Projects/rdio-sync/test/models/account_spec.coffee",
 		"/Users/roy/Projects/rdio-sync/package.json",
@@ -718,6 +734,8 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"@rdio",
+			"account.",
 			"AccountTable",
 			"Account",
 			"lg",
@@ -843,9 +861,7 @@
 			"Quotes",
 			"Quote",
 			"quote",
-			"Quote",
-			"quote",
-			"quotes_controller"
+			"Quote"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -871,7 +887,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -880,45 +896,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1136,
+						"buffer_size": 1444,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								803,
-								803
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 408.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/models/account.coffee",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 952,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								83,
-								83
+								528,
+								528
 							]
 						],
 						"settings":
@@ -935,20 +921,48 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src/application.coffee",
+					"buffer": 1,
+					"file": "src/templates/accounts/show.eco",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1295,
+						"buffer_size": 21,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1059,
-								1059
+								4,
+								4
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/application.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1358,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1173,
+								1173
 							]
 						],
 						"settings":
@@ -961,7 +975,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -977,8 +991,8 @@
 						"selection":
 						[
 							[
-								914,
-								914
+								912,
+								912
 							]
 						],
 						"settings":
@@ -988,10 +1002,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 673.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -1000,15 +1014,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1505,
+						"buffer_size": 2156,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								266,
-								266
+								2152,
+								2152
 							]
 						],
 						"settings":
@@ -1018,10 +1032,40 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1666.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/models/account.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1047,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								614,
+								614
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 312.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -1082,6 +1126,14 @@
 		"selected_items":
 		[
 			[
+				"accou",
+				"src/models/account.coffee"
+			],
+			[
+				"show",
+				"src/templates/accounts/show.eco"
+			],
+			[
 				"ind",
 				"public/index.html"
 			],
@@ -1092,10 +1144,6 @@
 			[
 				"accsp",
 				"test/models/account_spec.coffee"
-			],
-			[
-				"accou",
-				"src/models/account.coffee"
 			],
 			[
 				"spec",
@@ -1588,10 +1636,6 @@
 			[
 				"coll",
 				"src/collections/quotes.coffee"
-			],
-			[
-				"qu",
-				"src/models/quote.coffee"
 			]
 		],
 		"width": 0.0
@@ -1601,6 +1645,10 @@
 		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"",
+				"~/.sublime/sink.sublime-project"
+			],
 			[
 				"sink",
 				"~/.sublime/sink.sublime-project"
@@ -1712,10 +1760,6 @@
 			[
 				"fla",
 				"~/Projects/Sublime/flaming-octo-shame.sublime-project"
-			],
-			[
-				"",
-				"~/.sublime/podcast-publisher.sublime-project"
 			],
 			[
 				"agmak",

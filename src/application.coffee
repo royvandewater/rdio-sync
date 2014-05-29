@@ -10,9 +10,6 @@ AccountsController = require './controllers/accounts_controller'
 
 RDIO_TOKEN = [process.env['RDIO_KEY'], process.env['RDIO_SECRET']]
 
-
-
-
 app = express()
 
 app.use morgan 'dev'
@@ -37,6 +34,7 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
       response.sendfile path.join(__dirname, '../public/index.html')
 
     app.post '/accounts', accounts_controller.create
+    app.get  '/accounts/:account_id', accounts_controller.show
     app.get  '/accounts/:account_id/login', accounts_controller.login
 
     server = app.listen 3003, ->

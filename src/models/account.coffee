@@ -25,6 +25,9 @@ class Account
     _.each attributes, (value, key) =>
       @table[key] = value
 
+  toJSON: =>
+    _.clone @table
+
   @schema:
     username:      {type: 'text'}
     rdio_key:      {type: 'text'}

@@ -48,3 +48,26 @@ describe 'Account', ->
           _.each @attributes, (value, key) =>
             expect(@sut.get key).to.deep.equal value
           callback()
+
+  describe 'toJSON', ->
+    beforeEach ->
+      @attributes =
+        id: 4
+        username: 'random'
+        rdio_key: 'key'
+        rdio_secret: 'secret'
+        number_of_tracks_to_sync: 3
+        auto_sync: false
+        last_synced_at: new Date('2013-02-01')
+        sync_type: 'n/a'
+        session_token: 'token'
+      @sut = new Account @attributes
+
+    it 'should include the all the attributes', ->
+      expect(@sut.toJSON()).to.deep.equal @attributes
+
+    it 'should not let me change the original', ->
+      new_attributes = @sut.toJSON()
+      new_attributes.username = 'modnar'
+      expect(@sut.toJSON().username).to.equal 'random'
+
