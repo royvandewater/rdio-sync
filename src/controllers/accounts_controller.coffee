@@ -1,16 +1,8 @@
 Account = require '../models/account'
-eco     = require 'eco'
-fs      = require 'fs'
 
 class AccountsController
   constructor: (options={}) ->
     Account.table = options.account_table
-    @show_template = eco.compile fs.readFileSync("#{__dirname}/../templates/accounts/show.eco", encoding: "utf8")
-
-  show: (request, response) =>
-    account = new Account id: request.params.account_id
-    account.fetch =>
-      response.send @show_template account.toJSON()
 
   create: (request, response) =>
     Account.start_rdio_initialization request.headers.host, (error, auth_url) =>
