@@ -13,17 +13,18 @@ class AccountsController
       response.send @show_template account.toJSON()
 
   create: (request, response) =>
-    account = new Account
-    account.start_rdio_initialization request.headers.host, (error, auth_url) =>
+    Account.start_rdio_initialization request.headers.host, (error, auth_url) =>
+      throw error if error?
       response.redirect auth_url
 
   login: (request, response) =>
-    account = new Account id: request.params.account_id
-    account.fetch =>
-      account.complete_rdio_authentication request.query.oauth_verifier, (error) =>
+    account_id = request.params.account_id
+    oauth_verifier = request.query.oauth_verifier
+
+    Account.complete_rdio_authentication account_id, oauth_verifier, (error, account) =>
       throw error if error?
-      url = "http://#{request.headers.host}/accounts/#{account.id}"
-      response.redirect url
+      response.redirect "http://#{request.headers.host}/accounts/#{account.id}"
+
 
 
 module.exports = AccountsController

@@ -3,8 +3,11 @@ Rdio    = require '../../lib/rdio'
 
 class Account
   constructor: (attributes, options={}) ->
-    @table = new Account.table()
-    @set(attributes ? {})
+    @table = options.table ? new Account.table()
+    @set(attributes ? {}) unless options.table?
+
+  destroy: (callback=->) =>
+    @table.remove callback
 
   fetch: (callback=->) =>
     Account.table.get @id, (error, @table) =>
@@ -29,31 +32,52 @@ class Account
   toJSON: =>
     _.clone @table
 
-  start_rdio_initialization: (host, callback=->) =>
+  @where: (filters, callback=->) =>
+    Account.table.find filters, (error, accounts) =>
+      callback error, _.map(accounts, (account) -> new Account({}, table: account))
+
+  @start_rdio_initialization: (host, callback) =>
     rdio = new Rdio global.RDIO_TOKEN
-    @save =>
-      url  = "#{host}/accounts/#{@id}/login"
+    account = new Account
+    account.save =>
+      url  = "#{host}/accounts/#{account.id}/login"
 
       rdio.beginAuthentication url, (error, auth_url) =>
         return callback error if error?
-        @set rdio_key: rdio.token[0], rdio_secret: rdio.token[1]
 
-        @save (error) =>
+        account.set rdio_key: rdio.token[0], rdio_secret: rdio.token[1]
+        account.save (error) =>
           callback error, auth_url
 
-  complete_rdio_authentication: (oauth_verifier, callback=->) =>
-    rdio = new Rdio global.RDIO_TOKEN, @rdio_token()
-    rdio.completeAuthentication oauth_verifier, (error) =>
+  @complete_rdio_authentication: (id, oauth_verifier, callback=->) =>
+    account = new Account id: id
+    account.fetch (error) =>
       return callback error if error?
 
-      rdio.call 'currentUser', (error, data) =>
+      rdio = new Rdio global.RDIO_TOKEN, account.rdio_token()
+      rdio.completeAuthentication oauth_verifier, (error) =>
         return callback error if error?
 
-        @set
-          rdio_key:    rdio.token[0]
-          rdio_secret: rdio.token[1]
-          username:    data.result.url.match(/\/(\w+)\/$/)[1]
-        @save callback
+        rdio.call 'currentUser', (error, data) =>
+          return callback error if error?
+
+          username = data.result.url.match(/\/(\w+)\/$/)[1]
+
+          Account.where username: username, (error, accounts) =>
+            return callback error if error?
+
+            old_account = _.first accounts
+            if old_account
+              account.destroy()
+              account = old_account
+
+            account.set
+              rdio_key:    rdio.token[0]
+              rdio_secret: rdio.token[1]
+              username:    username
+            account.save (error) =>
+              console.log 'save'
+              callback error, account
 
   @schema:
     username:      {type: 'text'}
