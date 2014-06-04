@@ -1,4 +1,5 @@
 _ = require 'underscore'
+Rdio    = require '../../lib/rdio'
 
 class Account
   constructor: (attributes, options={}) ->
@@ -27,6 +28,32 @@ class Account
 
   toJSON: =>
     _.clone @table
+
+  start_rdio_initialization: (host, callback=->) =>
+    rdio = new Rdio global.RDIO_TOKEN
+    @save =>
+      url  = "#{host}/accounts/#{@id}/login"
+
+      rdio.beginAuthentication url, (error, auth_url) =>
+        return callback error if error?
+        @set rdio_key: rdio.token[0], rdio_secret: rdio.token[1]
+
+        @save (error) =>
+          callback error, auth_url
+
+  complete_rdio_authentication: (oauth_verifier, callback=->) =>
+    rdio = new Rdio global.RDIO_TOKEN, @rdio_token()
+    rdio.completeAuthentication oauth_verifier, (error) =>
+      return callback error if error?
+
+      rdio.call 'currentUser', (error, data) =>
+        return callback error if error?
+
+        @set
+          rdio_key:    rdio.token[0]
+          rdio_secret: rdio.token[1]
+          username:    data.result.url.match(/\/(\w+)\/$/)[1]
+        @save callback
 
   @schema:
     username:      {type: 'text'}

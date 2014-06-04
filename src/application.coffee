@@ -8,7 +8,7 @@ orm             = require 'orm'
 Account            = require './models/account'
 AccountsController = require './controllers/accounts_controller'
 
-RDIO_TOKEN = [process.env['RDIO_KEY'], process.env['RDIO_SECRET']]
+global.RDIO_TOKEN = [process.env['RDIO_KEY'], process.env['RDIO_SECRET']]
 
 app = express()
 
@@ -27,7 +27,7 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
   AccountTable = database.define 'accounts', Account.schema
 
   database.sync ->
-    accounts_controller = new AccountsController rdio_token: RDIO_TOKEN, account_table: AccountTable
+    accounts_controller = new AccountsController account_table: AccountTable
 
     # Register URLs
     app.get  '/', (request, response) ->
