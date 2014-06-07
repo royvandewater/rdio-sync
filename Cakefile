@@ -3,10 +3,10 @@ require 'coffee-script/register'
 {watchTree}  = require 'watch'
 _            = require 'underscore'
 CoffeeScript = require 'coffee-script'
-Walk         = require 'walk'
 fs           = require 'fs'
-moment       = require 'moment'
 mapcat       = require 'mapcat'
+moment       = require 'moment'
+Walk         = require 'walk'
 EcoUtil      = require './src/util/eco_util'
 
 TEST_ARGS = [
@@ -20,8 +20,7 @@ TEST_ARGS = [
 COFFEE_ARGS = [
   '--compile'
   '--map'
-  '--output', 'build/client'
-  'src/client'
+  'public/js/src'
 ]
 
 task 'build', 'compile the client side coffee script', ->
@@ -41,19 +40,19 @@ task 'dev', 'watch sources and run tests', ->
 
   compile_client _.union(['--watch'], COFFEE_ARGS)
   compile_templates()
-  watchTree 'src/client/templates', compile_templates
+  watchTree 'public/js/src/templates', compile_templates
 
   watchTree 'src', run_tests
   watchTree 'test', run_tests
-  watchTree 'build/client', concatinate_javascript
+  watchTree 'public/js/src', concatinate_javascript
   run_tests()
 
 concatinate_javascript = ->
   map_files = []
-  walker = Walk.walk 'build/client'
+  walker = Walk.walk 'public/js/src'
   walker.on 'file', (root, fileStats, next) ->
-    console.log "found: #{root}#{fileStats.name}"
     return next() unless /\.map$/.test fileStats.name
+    console.log "found: #{root}#{fileStats.name}"
     map_files.push "#{root}/#{fileStats.name}"
     next()
 
@@ -72,16 +71,18 @@ compile_client = (coffee_args, callback=->) ->
 compile_templates = (callback=->) =>
   output = ''
 
-  walker = Walk.walk 'src/client/templates/'
+  walker = Walk.walk 'public/js/src/templates/'
   walker.on 'file', (root, fileStats, next) =>
+    return next() unless /\.eco$/.test fileStats.name
     path = "#{root}#{fileStats.name}"
-    EcoUtil.compile path, 'JST', fileStats.name, (error, compiled_template) =>
+    name = fileStats.name[0...-4]
+    EcoUtil.compile path, 'JST', name, (error, compiled_template) =>
       output += compiled_template
       next()
 
   walker.on 'end', =>
     fs.writeFile 'public/js/templates.js', output, =>
       console.log "#{moment().format 'hh:mm:ss'} - compiled public/js/templates.js"
-      callback()
+      callback?()
 
 
