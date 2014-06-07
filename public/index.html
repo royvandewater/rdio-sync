@@ -23,9 +23,11 @@
     </div>
   </div>
 
-  <hr>
 
-  <div id="main">
+  <div id="main-content">
+
+    <hr>
+
     <div class="jumbotron">
       <h1>Auto sync your best Rdio music!</h1>
       <p class="lead">Reduce mobile data usage and ensure you're never caught without good music again.</p>
@@ -56,9 +58,10 @@
         <p>Life's to short to spend it in silence. Let Sink manage which songs sync and you'll be sure to have kick ass tunes, even in the middle of nowhere</p>
       </div>
     </div>
+
+    <hr>
   </div>
 
-  <hr>
 
   <div class="footer">
     <p>© Sink 2013</p>
@@ -67,5 +70,14 @@
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+<script type="text/javascript" src="/js/templates.js"></script>
+<script type="text/javascript" src="/js/package.js"></script>
+<script type="text/javascript">
+  $(function(){
+    Backbone.history.start({pushState: true});
+  })
+</script>
 </body>
 </html>

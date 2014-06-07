@@ -28,7 +28,8 @@
     "orm": "~2.1.14",
     "mysql": "~2.3.1",
     "eco": "~1.1.0-rc-3",
-    "coffee-script": "~1.7.1"
+    "coffee-script": "~1.7.1",
+    "walk": "~2.3.3"
   },
   "devDependencies": {
     "watch": "~0.10.0",
@@ -36,6 +37,7 @@
     "sinon-chai": "~2.5.0",
     "chai": "~1.9.1",
     "sinon": "~1.10.0",
-    "mocha": "~1.19.0"
+    "mocha": "~1.19.0",
+    "mapcat": "~0.2.0"
   }
 }

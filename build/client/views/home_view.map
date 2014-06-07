@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "home_view.js",
+  "sourceRoot": "../../..",
+  "sources": [
+    "src/client/views/home_view.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,QAAA;IAAA;mSAAA;;AAAA,EAAM;AACJ,+BAAA,CAAA;;;;KAAA;;AAAA,uBAAA,QAAA,GAAU,GAAI,CAAA,MAAA,CAAd,CAAA;;oBAAA;;KADqB,QAAQ,CAAC,KAAhC,CAAA;AAAA"
+}
