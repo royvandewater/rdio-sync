@@ -29,14 +29,16 @@ task 'dev', 'watch sources and run tests', ->
     script: 'src/application.coffee'
     verbose: true
 
-  compile_coffeescript()
   watchTree 'public/js/src', compile_coffeescript
-  compile_templates()
   watchTree 'public/js/src/templates', compile_templates
 
   watchTree 'src', run_tests
   watchTree 'test', run_tests
   run_tests()
+
+
+
+
 
 run_tests = (arg1) ->
   return if _.isObject arg1
