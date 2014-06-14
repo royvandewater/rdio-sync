@@ -49,7 +49,7 @@ class EcoCompiler
       callback null, """
         (function() {
           this.#{identifier} || (this.#{identifier} = {});
-          this.#{identifier}[#{JSON.stringify name}] = #{template.slice 2};
+          this.#{identifier}[#{JSON.stringify name}] = #{template};
         }).call(this);
       """
 

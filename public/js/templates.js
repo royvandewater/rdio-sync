@@ -1,6 +1,6 @@
 (function() {
   this.JST || (this.JST = {});
-  this.JST["home"] = nction(__obj) {
+  this.JST["home"] = function(__obj) {
   if (!__obj) __obj = {};
   var __out = [], __capture = function(callback) {
     var out = __out, result;
@@ -49,7 +49,7 @@
 };
 }).call(this); (function() {
   this.JST || (this.JST = {});
-  this.JST["show"] = nction(__obj) {
+  this.JST["show"] = function(__obj) {
   if (!__obj) __obj = {};
   var __out = [], __capture = function(callback) {
     var out = __out, result;
