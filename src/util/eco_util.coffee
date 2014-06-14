@@ -1,9 +1,55 @@
 fs     = require 'fs'
+path   = require 'path'
 eco    = require 'eco'
 Walk   = require 'walk'
 moment = require 'moment'
+_      = require 'underscore'
 
-repeat = repeat = (string, count) ->
+class EcoCompiler
+  constructor: (@output_file) ->
+    @templates_cache = {}
+
+  compile_file: (file_path) =>
+    @_compile_file file_path, (error, compiled_template) =>
+      return unless compiled_template?
+      @concate_templates()
+
+  _compile_file: (file_path, callback=->) =>
+    return callback() unless _.isString file_path
+    return callback() unless /\.eco$/.test file_path
+
+    name = path.basename file_path, '.eco'
+    compile file_path, 'JST', name, (error, compiled_template) =>
+      throw error if error?
+
+      @templates_cache[name] = compiled_template
+      callback(error, compiled_template)
+
+  compile_directory: (directory) =>
+    walker = Walk.walk directory
+    walker.on 'file', (root, fileStats, next) =>
+      file_path = "#{root}/#{fileStats.name}"
+      @_compile_file file_path, next
+
+    walker.on 'end', @concate_templates
+
+  concate_templates: (callback=->) =>
+    output = _.values(@templates_cache).join ' '
+
+    fs.writeFile @output_file, output, =>
+      console.log "#{moment().format 'hh:mm:ss'} - compiled #{@output_file}"
+      callback()
+
+module.exports = EcoCompiler
+
+
+compile_file = (filename, callback=->) ->
+  return callback() unless /\.eco$/.test fileStats.name
+  file_path = "#{root}#{fileStats.name}"
+  name = fileStats.name[0...-4]
+  compile file_path, 'JST', name, callback
+
+repeat = (string, count) ->
   Array(count + 1).join string
 
 indent = (string, width) ->
@@ -46,22 +92,4 @@ compile = (infile, identifier, name, callback) ->
         this.#{identifier}[#{JSON.stringify name}] = #{template.slice 2};
       }).call(this);
     """
-
-exports.create_compiler = (source_dir, output_file) ->
-  return (callback=->) ->
-    output = ''
-    walker = Walk.walk source_dir
-    walker.on 'file', (root, fileStats, next) =>
-      return next() unless /\.eco$/.test fileStats.name
-      path = "#{root}#{fileStats.name}"
-      name = fileStats.name[0...-4]
-      compile path, 'JST', name, (error, compiled_template) =>
-        output += compiled_template
-        next()
-
-    walker.on 'end', =>
-      fs.writeFile output_file, output, =>
-        console.log "#{moment().format 'hh:mm:ss'} - compiled #{output_file}"
-        callback?()
-
 

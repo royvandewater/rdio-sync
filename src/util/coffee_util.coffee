@@ -5,13 +5,6 @@ mapcat       = require 'mapcat'
 Walk         = require 'walk'
 _            = require 'underscore'
 
-exports.compile_dir = (options={}) ->
-  coffee_args = _.clone ['--compile', '--map']
-  coffee_args.push options.directory
-  compiler = spawn 'coffee', coffee_args
-  compiler.on 'close', ->
-    concatinate_javascript options
-
 exports.create_compiler = (options={}) ->
   return (callback=->) ->
     new_options = _.defaults({
@@ -20,7 +13,14 @@ exports.create_compiler = (options={}) ->
         callback?()
     }, options);
 
-    exports.compile_dir new_options
+    compile_dir new_options
+
+compile_dir = (options={}) ->
+  coffee_args = _.clone ['--compile', '--map']
+  coffee_args.push options.directory
+  compiler = spawn 'coffee', coffee_args
+  compiler.on 'close', ->
+    concatinate_javascript options
 
 concatinate_javascript = (options={}) ->
   map_files = []
