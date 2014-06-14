@@ -1,45 +1,56 @@
 require 'coffee-script/register'
-{spawn}      = require 'child_process'
-{watchTree}  = require 'watch'
-_            = require 'underscore'
-moment       = require 'moment'
-EcoCompiler  = require './src/util/eco_compiler'
-CoffeeUtil      = require './src/util/coffee_compiler'
+{spawn}        = require 'child_process'
+{watchTree}    = require 'watch'
+_              = require 'underscore'
+moment         = require 'moment'
+EcoCompiler    = require './src/util/eco_compiler'
+CoffeeCompiler = require './src/util/coffee_compiler'
 
-TEST_ARGS = [
-  "--compilers", "coffee:coffee-script/register"
-  "--require", "coffee-script"
-  "--require", "test/test_helper.coffee"
-  "--recursive"
-  "--growl"
-]
 
-task 'build', 'compile the client side coffee script', ->
-  compile_coffeescript ->
-    compile_templates()
+template_compiler = new EcoCompiler
+  output_file: 'public/js/templates.js'
 
-task 'test', 'rebuild the project', (options) ->
+coffee_compiler = new CoffeeCompiler
+  map_output_file:        'public/js/package.map'
+  javascript_output_file: 'public/js/package.js'
+
+
+task 'build', 'compile client side assets', ->
+  coffee_compiler.compile_directory 'public/js/src'
+  template_compiler.compile_directory 'public/js/src/templates'
+
+task 'test', 'run all the tests', ->
   run_tests()
 
 task 'dev', 'watch sources and run tests', ->
-  # nodemon     = require 'nodemon'
-  # nodemon
-  #   ext: 'coffee'
-  #   script: 'src/application.coffee'
-  #   verbose: true
+  watchTree 'public/js/src', coffee_compiler.compile_file
+  coffee_compiler.compile_directory 'public/js/src'
 
-  # watchTree 'public/js/src', compile_coffeescript
-  # watchTree 'public/js/src/templates', compile_templates
-  template_compiler = new EcoCompiler 'public/js/templates.js'
   watchTree 'public/js/src/templates', template_compiler.compile_file
   template_compiler.compile_directory 'public/js/src/templates'
 
-  # watchTree 'src', run_tests
-  # watchTree 'test', run_tests
-  # run_tests()
+  watchTree 'src', run_tests
+  watchTree 'test', run_tests
+  run_tests()
+
+  nodemon     = require 'nodemon'
+  nodemon
+    ext: 'coffee'
+    script: 'src/application.coffee'
+    verbose: true
+
 
 run_tests = (arg1) ->
   return if _.isObject arg1
+  TEST_ARGS = [
+    '--compilers', 'coffee:coffee-script/register'
+    '--require', 'coffee-script'
+    '--require', 'test/test_helper.coffee'
+    '--recursive'
+    '--growl'
+    '--reporter', 'spec'
+
+  ]
   spawn 'mocha', TEST_ARGS, stdio: 'inherit'
 
 # compile_templates = EcoUtil.create_compiler 'public/js/src/templates/', 'public/js/templates.js'

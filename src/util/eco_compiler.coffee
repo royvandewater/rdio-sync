@@ -1,27 +1,28 @@
 fs        = require 'fs'
 path      = require 'path'
 eco       = require 'eco'
-Walk      = require 'walk'
+walk      = require 'walk'
 moment    = require 'moment'
 _         = require 'underscore'
 {compile} = require './eco_util'
 
 class EcoCompiler
-  constructor: (@output_file) ->
+  constructor: (options) ->
+    @output_file = options.output_file
     @templates_cache = {}
 
   compile_file: (file_path) =>
     @_compile_file file_path, (error, compiled_template) =>
       return unless compiled_template?
-      @_concate_templates()
+      @_concatinate_templates()
 
   compile_directory: (directory) =>
-    walker = Walk.walk directory
+    walker = walk.walk directory
     walker.on 'file', (root, fileStats, next) =>
-      file_path = "#{root}/#{fileStats.name}"
+      file_path = path.join root, fileStats.name
       @_compile_file file_path, next
 
-    walker.on 'end', @_concate_templates
+    walker.on 'end', @_concatinate_templates
 
   _compile_file: (file_path, callback=->) =>
     return callback() unless _.isString file_path
@@ -34,7 +35,7 @@ class EcoCompiler
       @templates_cache[name] = compiled_template
       callback(error, compiled_template)
 
-  _concate_templates: (callback=->) =>
+  _concatinate_templates: (callback=->) =>
     output = _.values(@templates_cache).join ' '
 
     fs.writeFile @output_file, output, =>
