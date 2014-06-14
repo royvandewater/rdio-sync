@@ -4,7 +4,6 @@ eco       = require 'eco'
 walk      = require 'walk'
 moment    = require 'moment'
 _         = require 'underscore'
-{compile} = require './eco_util'
 
 class EcoCompiler
   constructor: (options) ->
@@ -29,7 +28,7 @@ class EcoCompiler
     return callback() unless /\.eco$/.test file_path
 
     name = path.basename file_path, '.eco'
-    compile file_path, 'JST', name, (error, compiled_template) =>
+    @_compile file_path, 'JST', name, (error, compiled_template) =>
       throw error if error?
 
       @templates_cache[name] = compiled_template
@@ -41,5 +40,17 @@ class EcoCompiler
     fs.writeFile @output_file, output, =>
       console.log "#{moment().format 'hh:mm:ss'} - compiled #{@output_file}"
       callback()
+
+  _compile: (infile, identifier, name, callback) ->
+    fs.readFile infile, "utf8", (err, source) ->
+      return callback err if err
+      template = eco.precompile source
+
+      callback null, """
+        (function() {
+          this.#{identifier} || (this.#{identifier} = {});
+          this.#{identifier}[#{JSON.stringify name}] = #{template.slice 2};
+        }).call(this);
+      """
 
 module.exports = EcoCompiler
