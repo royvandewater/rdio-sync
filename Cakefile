@@ -3,7 +3,7 @@ require 'coffee-script/register'
 {watchTree}  = require 'watch'
 _            = require 'underscore'
 moment       = require 'moment'
-EcoCompiler  = require './src/util/eco_util'
+EcoCompiler  = require './src/util/eco_compiler'
 CoffeeUtil      = require './src/util/coffee_util'
 
 TEST_ARGS = [
