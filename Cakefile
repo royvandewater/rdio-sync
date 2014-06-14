@@ -4,7 +4,7 @@ require 'coffee-script/register'
 _            = require 'underscore'
 moment       = require 'moment'
 EcoCompiler  = require './src/util/eco_compiler'
-CoffeeUtil      = require './src/util/coffee_util'
+CoffeeUtil      = require './src/util/coffee_compiler'
 
 TEST_ARGS = [
   "--compilers", "coffee:coffee-script/register"
