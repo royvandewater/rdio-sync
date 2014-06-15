@@ -39,6 +39,7 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
     app.get  '/accounts/:account_id/login', accounts_controller.login
 
     app.get  '/api/v1/accounts/:account_id', accounts_api_controller.show
+    app.put  '/api/v1/accounts/:account_id', accounts_api_controller.update
 
     app.use (req, res) ->
       return res.send 404 unless req.method == 'GET'

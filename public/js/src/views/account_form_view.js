@@ -39,15 +39,16 @@
     AccountFormView.prototype.submit = function($event) {
       $event.preventDefault();
       $event.stopPropagation();
+      console.log(this.values());
       this.model.set(this.values());
       return this.model.save();
     };
 
     AccountFormView.prototype.values = function() {
       return {
-        number_of_tracks_to_sync: this.$('number-of-tracks').val(),
-        sync_type: this.$('sync_type').val(),
-        auto_sync: this.$('auto_sync').val()
+        number_of_tracks_to_sync: this.$('.number-of-tracks').val(),
+        sync_type: this.$('.sync-type').val(),
+        auto_sync: this.$('.auto-sync').val()
       };
     };
 

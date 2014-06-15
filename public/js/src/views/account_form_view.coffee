@@ -16,10 +16,11 @@ class window.AccountFormView extends Backbone.View
   submit: ($event) =>
     $event.preventDefault()
     $event.stopPropagation()
+    console.log @values()
     @model.set @values()
     @model.save()
 
   values: =>
-    number_of_tracks_to_sync: @$('number-of-tracks').val()
-    sync_type: @$('sync_type').val()
-    auto_sync: @$('auto_sync').val()
+    number_of_tracks_to_sync: @$('.number-of-tracks').val()
+    sync_type: @$('.sync-type').val()
+    auto_sync: @$('.auto-sync').val()
