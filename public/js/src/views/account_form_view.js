@@ -29,7 +29,9 @@
     };
 
     AccountFormView.prototype.render = function() {
-      return this.$el.html(this.template(this.context()));
+      this.$el.html(this.template(this.context()));
+      this.$('.sync-type').val(this.model.get('sync_type'));
+      return this.$el;
     };
 
     AccountFormView.prototype.events = {
@@ -39,7 +41,6 @@
     AccountFormView.prototype.submit = function($event) {
       $event.preventDefault();
       $event.stopPropagation();
-      console.log(this.values());
       this.model.set(this.values());
       return this.model.save();
     };
@@ -48,7 +49,7 @@
       return {
         number_of_tracks_to_sync: this.$('.number-of-tracks').val(),
         sync_type: this.$('.sync-type').val(),
-        auto_sync: this.$('.auto-sync').val()
+        auto_sync: this.$('.auto-sync').prop('checked')
       };
     };
 

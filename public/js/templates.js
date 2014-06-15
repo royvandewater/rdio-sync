@@ -53,7 +53,7 @@
     
       __out.push('" class="number-of-tracks form-control" value="');
     
-      __out.push(__sanitize(this.number_of_tracks_to_sync));
+      __out.push(__sanitize(this.model.number_of_tracks_to_sync));
     
       __out.push('">\n    </div>\n  </div>\n\n  <div class="form-group">\n    <label class="control-label col-lg-2" for="sync-type-');
     

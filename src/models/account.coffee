@@ -1,5 +1,5 @@
-_ = require 'underscore'
-Rdio    = require '../../lib/rdio'
+_    = require 'underscore'
+Rdio = require '../../lib/rdio'
 
 class Account
   constructor: (attributes, options={}) ->
@@ -20,6 +20,7 @@ class Account
     [@get('rdio_key'), @get('rdio_secret')]
 
   save: (callback=->) =>
+    @table.id = @id
     @table.save (error, table) =>
       @id = @table.id
       callback error, this
@@ -76,7 +77,6 @@ class Account
               rdio_secret: rdio.token[1]
               username:    username
             account.save (error) =>
-              console.log 'save'
               callback error, account
 
   @schema:
@@ -88,8 +88,5 @@ class Account
     auto_sync:     {type: 'boolean'}
     number_of_tracks_to_sync: {type: 'number'}
     last_synced_at: {type: 'date', time: true}
-    # last_synced_at: '2014-05-2'
-    # sync_type: 'both'
-    # session_token: '1234'
 
 module.exports = Account

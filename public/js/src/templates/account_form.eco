@@ -8,7 +8,7 @@
   <div class="form-group">
     <label class="control-label col-lg-2" for="number-of-tracks-<%= @cid %>">Number of tracks:</label>
     <div class="col-lg-10">
-      <input type="number" id="number-of-tracks-<%= @cid %>" class="number-of-tracks form-control" value="<%= @number_of_tracks_to_sync %>">
+      <input type="number" id="number-of-tracks-<%= @cid %>" class="number-of-tracks form-control" value="<%= @model.number_of_tracks_to_sync %>">
     </div>
   </div>
 
