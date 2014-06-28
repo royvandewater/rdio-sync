@@ -13,7 +13,7 @@ global.RDIO_TOKEN = [process.env['RDIO_KEY'], process.env['RDIO_SECRET']]
 
 app = express()
 
-app.use morgan 'dev'
+app.use morgan(format: 'dev')
 app.use body_parser()
 app.use express.static path.join(__dirname, '../public')
 

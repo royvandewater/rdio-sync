@@ -10,6 +10,7 @@
     function AccountFormView() {
       this.values = __bind(this.values, this);
       this.submit = __bind(this.submit, this);
+      this.hide_loading = __bind(this.hide_loading, this);
       this.render = __bind(this.render, this);
       this.context = __bind(this.context, this);
       this.initialize = __bind(this.initialize, this);
@@ -19,7 +20,8 @@
     AccountFormView.prototype.template = JST['account_form'];
 
     AccountFormView.prototype.initialize = function() {
-      return this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'change', this.render);
+      return this.listenTo(this.model, 'sync error', this.hide_loading);
     };
 
     AccountFormView.prototype.context = function() {
@@ -36,6 +38,10 @@
 
     AccountFormView.prototype.events = {
       'submit form': 'submit'
+    };
+
+    AccountFormView.prototype.hide_loading = function() {
+      return this.$('.loading-spinner').hide();
     };
 
     AccountFormView.prototype.submit = function($event) {
