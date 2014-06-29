@@ -15,17 +15,10 @@
     Account.prototype.urlRoot = '/api/v1/accounts';
 
     Account.prototype.initialize = function() {
-      this.on('request', (function(_this) {
-        return function() {
-          return _this.set({
-            loading: true
-          });
-        };
-      })(this));
       return this.on('sync', (function(_this) {
         return function() {
           return _this.set({
-            loading: false
+            sync_now: false
           });
         };
       })(this));

@@ -39,7 +39,7 @@
     </div>
     <div class="col-lg-10">
       <button type="submit" class="btn btn-primary">Save</button>
-      <a href="#" class="sync btn btn-danger">Sync</a>
+      <button href="#" class="sync btn btn-danger">Sync</button>
     </div>
   </div>
 </form>

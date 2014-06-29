@@ -9,6 +9,7 @@
 
     function AccountFormView() {
       this.values = __bind(this.values, this);
+      this.initiate_sync = __bind(this.initiate_sync, this);
       this.submit = __bind(this.submit, this);
       this.hide_loading = __bind(this.hide_loading, this);
       this.render = __bind(this.render, this);
@@ -37,7 +38,8 @@
     };
 
     AccountFormView.prototype.events = {
-      'submit form': 'submit'
+      'submit form': 'submit',
+      'click button.sync': 'initiate_sync'
     };
 
     AccountFormView.prototype.hide_loading = function() {
@@ -49,6 +51,15 @@
       $event.stopPropagation();
       this.model.set(this.values());
       return this.model.save();
+    };
+
+    AccountFormView.prototype.initiate_sync = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      this.model.set(this.values());
+      return this.model.save({
+        sync_now: true
+      });
     };
 
     AccountFormView.prototype.values = function() {

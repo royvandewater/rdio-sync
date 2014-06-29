@@ -15,6 +15,7 @@ class window.AccountFormView extends Backbone.View
 
   events:
     'submit form': 'submit'
+    'click button.sync': 'initiate_sync'
 
   hide_loading: =>
     @$('.loading-spinner').hide()
@@ -24,6 +25,12 @@ class window.AccountFormView extends Backbone.View
     $event.stopPropagation()
     @model.set @values()
     @model.save()
+
+  initiate_sync: ($event) =>
+    $event.preventDefault()
+    $event.stopPropagation()
+    @model.set @values()
+    @model.save sync_now: true
 
   values: =>
     number_of_tracks_to_sync: @$('.number-of-tracks').val()

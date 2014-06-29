@@ -6,7 +6,8 @@ class AccountsController
 
   show: (request, response) =>
     account = new Account id: request.params.account_id
-    account.fetch =>
+    account.fetch (error, model) =>
+      return response.send(error, 404) if error?
       response.send account.toJSON()
 
   update: (request, response) =>
@@ -15,7 +16,11 @@ class AccountsController
       account.set @_params request
       account.save (error, account) =>
         return response.send(error, 422) if error?
-        response.send null, 204
+        return response.send null, 204 unless request.body.sync_now
+
+        account.sync (error) =>
+          return response.send(error, 404) if error?
+          return response.send null, 204
 
   _params: (request) =>
     auto_sync:                request.body.auto_sync

@@ -1,5 +1,7 @@
-_    = require 'underscore'
-Rdio = require '../../lib/rdio'
+_        = require 'underscore'
+async    = require 'async'
+Rdio     = require '../../lib/rdio'
+RdioSync = require './rdio_sync'
 
 class Account
   constructor: (attributes, options={}) ->
@@ -16,6 +18,9 @@ class Account
   get: (attribute) =>
     @table[attribute]
 
+  rdio: =>
+    @_rdio ||= new RdioSync(global.RDIO_TOKEN, @rdio_token())
+
   rdio_token: =>
     [@get('rdio_key'), @get('rdio_secret')]
 
@@ -30,8 +35,37 @@ class Account
     _.each attributes, (value, key) =>
       @table[key] = value
 
+  sync: (callback=->) =>
+    async.waterfall [
+      @_unset_all_synced_tracks
+      # @_set_tracks_to_sync
+      # @_update_last_synced_at
+    ], (error) =>
+      if error?
+        console.log "Account failed to sync. account.id: '#{@id}'"
+        console.log error
+      callback error
+
   toJSON: =>
     _.clone @table
+
+  update_attributes: (attributes, callback=->) =>
+    @set attributes
+    @save callback
+
+  _get_synced_track_keys: (callback=->) =>
+    @rdio().get_synced_tracks (error, synced_tracks) =>
+      callback error, _.pluck(synced_tracks, 'key')
+
+  _unset_all_synced_tracks: (callback=->) =>
+    @_get_synced_track_keys (error, synced_track_keys) =>
+      @rdio().set_sync false, synced_track_keys, callback
+
+  _set_tracks_to_sync: (callback=->) =>
+    @rdio().set_sync true,  @tracks_to_sync_keys, callback
+
+  _update_last_synced_at: (callback=->) =>
+    @update_attributes {last_synced_at: new Date}, callback
 
   @where: (filters, callback=->) =>
     Account.table.find filters, (error, accounts) =>
