@@ -9,7 +9,7 @@
 <hr>
 
 <div class="row marketing">
-  <div class="col-xs-12 col-md-6">
+  <div class="col-xs-12 col-sm-6">
     <h4>Automatically Sync</h4>
     <p>Sink will detect your top played songs and automatically mark them for 'sync to mobile'</p>
 
@@ -20,7 +20,7 @@
     <p>You can sync manually at any time, but the real magic is the automatic one that occurs every night at midnight</p>
   </div>
 
-  <div class="col-xs-12 col-md-6">
+  <div class="col-xs-12 col-sm-6">
     <h4>Reduce Your Mobile Data Usage</h4>
     <p>Take a look at your mobile data usage. Most of it's Rdio, and most of it is from streaming the same few songs over and over again. Why not cache them on your phone?</p>
 
