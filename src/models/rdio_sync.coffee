@@ -8,6 +8,16 @@ class RdioSync
   get_synced_tracks: (callback=->) =>
     @_get_synced_tracks 0, [], callback
 
+  most_played_tracks: (count, callback=->) =>
+    options = {sort: 'playCount', count: count}
+    @_call 'getTracksInCollection', options, (error, response) =>
+      callback error, response?.result
+
+  recently_added_tracks: (count, callback=->) =>
+    options = {sort: 'dateAdded', count: count}
+    @_call 'getTracksInCollection', options, (error, response) =>
+      callback error, response?.result
+
   set_sync: (sync, keys=[], callback=->) =>
     keys_string = keys.join ','
     @_call 'setAvailableOffline', {offline: sync, keys: keys_string}, callback

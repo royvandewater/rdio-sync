@@ -36,9 +36,9 @@ class Account
       @table[key] = value
 
   sync: (callback=->) =>
-    async.waterfall [
+    async.series [
       @_unset_all_synced_tracks
-      # @_set_tracks_to_sync
+      @_set_tracks_to_sync
       # @_update_last_synced_at
     ], (error) =>
       if error?
@@ -57,12 +57,42 @@ class Account
     @rdio().get_synced_tracks (error, synced_tracks) =>
       callback error, _.pluck(synced_tracks, 'key')
 
-  _unset_all_synced_tracks: (callback=->) =>
-    @_get_synced_track_keys (error, synced_track_keys) =>
-      @rdio().set_sync false, synced_track_keys, callback
+  _get_tracks_to_sync_keys: (callback=->) =>
+    @_tracks_to_sync (error, tracks_to_sync) =>
+      callback error, _.pluck(tracks_to_sync, 'key')
+
+  _mixed_tracks: (count, callback=->) =>
+    half_count = count / 2
+    @_most_played_tracks half_count, (error, most_played_tracks) =>
+      return callback error if error?
+      @_recently_added_tracks half_count, (error, recently_added_tracks) =>
+        return callback error if error?
+        callback error, _.union(most_played_tracks, recently_added_tracks)
+
+  _most_played_tracks: (count, callback=->) =>
+    @rdio().most_played_tracks count, callback
+
+  _recently_added_tracks: (count, callback=->) =>
+    @rdio().recently_added_tracks count, callback
 
   _set_tracks_to_sync: (callback=->) =>
-    @rdio().set_sync true,  @tracks_to_sync_keys, callback
+    @_get_tracks_to_sync_keys (error, tracks_to_sync_keys) =>
+      return callback error if error?
+      @rdio().set_sync true, tracks_to_sync_keys, callback
+
+  _tracks_to_sync: (callback=->) =>
+    count = @get('number_of_tracks_to_sync') ? 0
+
+    switch @get 'sync_type'
+      when 'playCount' then @_most_played_tracks count, callback
+      when 'dateAdded' then @_recently_added_tracks count, callback
+      when 'both'      then @_mixed_tracks count, callback
+      else throw "Invalid sync_type: #{sync_type}"
+
+  _unset_all_synced_tracks: (callback=->) =>
+    @_get_synced_track_keys (error, synced_track_keys) =>
+      callback error if error?
+      @rdio().set_sync false, synced_track_keys, callback
 
   _update_last_synced_at: (callback=->) =>
     @update_attributes {last_synced_at: new Date}, callback
