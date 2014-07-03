@@ -105,7 +105,7 @@ class Account
     rdio = new Rdio global.RDIO_TOKEN
     account = new Account
     account.save =>
-      url  = "#{host}/accounts/#{account.id}/login"
+      url  = "http://#{host}/accounts/#{account.id}/login"
 
       rdio.beginAuthentication url, (error, auth_url) =>
         return callback error if error?
