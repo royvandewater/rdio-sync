@@ -9,7 +9,7 @@ DESTINATION_DIR=$APP_DIR/releases/`date +%Y-%m-%d-%H-%M-%S`
 
 function locally_do(){
   COMMAND=$@
-  `$COMMAND`
+  $COMMAND
   if [ $? -ne 0 ]; then
       echo "Failed to run: '$COMMAND'"
       exit 1
