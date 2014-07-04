@@ -101,6 +101,14 @@ class Account
     Account.table.find filters, (error, accounts) =>
       callback error, _.map(accounts, (account) -> new Account({}, table: account))
 
+  @sync_all: (callback=->) =>
+    Account.where auto_sync: true, (error, accounts) ->
+      return callback(error) if error?
+      async.each accounts, (account, cb=->) ->
+        account.sync (error) ->
+          cb error
+      , callback
+
   @start_rdio_initialization: (host, callback) =>
     rdio = new Rdio global.RDIO_TOKEN
     account = new Account

@@ -5,6 +5,8 @@ _              = require 'underscore'
 moment         = require 'moment'
 EcoCompiler    = require './src/util/eco_compiler'
 CoffeeCompiler = require './src/util/coffee_compiler'
+Account        = require './src/models/account'
+orm            = require 'orm'
 
 
 template_compiler = new EcoCompiler
@@ -14,6 +16,14 @@ coffee_compiler = new CoffeeCompiler
   map_output_file:        'public/js/package.map'
   javascript_output_file: 'public/js/package.js'
 
+task 'sync', 'syncs all accounts marked for auto sync', ->
+  orm.connect "mysql://root:@localhost/rdio_sync", (error, database) ->
+    throw error if error?
+    global.RDIO_TOKEN = [process.env['RDIO_KEY'], process.env['RDIO_SECRET']]
+    Account.table = database.define 'accounts', Account.schema
+    Account.sync_all (error) ->
+      throw error if error?
+      process.exit()
 
 task 'build', 'compile client side assets', ->
   coffee_compiler.compile_directory 'public/js/src'
