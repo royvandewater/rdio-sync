@@ -148,9 +148,9 @@ class Account
     rdio_key:      {type: 'text'}
     rdio_secret:   {type: 'text'}
     session_token: {type: 'text'}
-    sync_type:     {type: 'text'}
-    auto_sync:     {type: 'boolean'}
-    number_of_tracks_to_sync: {type: 'number'}
+    sync_type:     {type: 'text', defaultValue: 'playCount'}
+    auto_sync:     {type: 'boolean', defaultValue: false, required: true}
+    number_of_tracks_to_sync: {type: 'number', defaultValue: 200}
     last_synced_at: {type: 'date', time: true}
 
 module.exports = Account
