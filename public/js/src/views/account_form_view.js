@@ -11,6 +11,7 @@
       this.values = __bind(this.values, this);
       this.initiate_sync = __bind(this.initiate_sync, this);
       this.submit = __bind(this.submit, this);
+      this.show_loading = __bind(this.show_loading, this);
       this.hide_loading = __bind(this.hide_loading, this);
       this.render = __bind(this.render, this);
       this.context = __bind(this.context, this);
@@ -22,7 +23,8 @@
 
     AccountFormView.prototype.initialize = function() {
       this.listenTo(this.model, 'change', this.render);
-      return this.listenTo(this.model, 'sync error', this.hide_loading);
+      this.listenTo(this.model, 'sync error', this.hide_loading);
+      return this.listenTo(this.model, 'request', this.show_loading);
     };
 
     AccountFormView.prototype.context = function() {
@@ -44,6 +46,10 @@
 
     AccountFormView.prototype.hide_loading = function() {
       return this.$('.loading-spinner').hide();
+    };
+
+    AccountFormView.prototype.show_loading = function() {
+      return this.$('.loading-spinner').show();
     };
 
     AccountFormView.prototype.submit = function($event) {

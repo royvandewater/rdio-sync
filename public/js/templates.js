@@ -43,11 +43,11 @@
     
       __out.push(__sanitize(this.model.username));
     
-      __out.push('</strong></p>\n\n<hr>\n\n<form class="form-horizontal">\n  <div class="form-group">\n    <label class="control-label col-lg-2" for="number-of-tracks-');
+      __out.push('</strong></p>\n\n<hr>\n\n<form class="form-horizontal">\n  <div class="form-group">\n    <label class="control-label col-md-2" for="number-of-tracks-');
     
       __out.push(__sanitize(this.cid));
     
-      __out.push('">Number of tracks:</label>\n    <div class="col-lg-10">\n      <input type="number" id="number-of-tracks-');
+      __out.push('">Number of tracks:</label>\n    <div class="col-md-10">\n      <input type="number" id="number-of-tracks-');
     
       __out.push(__sanitize(this.cid));
     
@@ -55,21 +55,21 @@
     
       __out.push(__sanitize(this.model.number_of_tracks_to_sync));
     
-      __out.push('">\n    </div>\n  </div>\n\n  <div class="form-group">\n    <label class="control-label col-lg-2" for="sync-type-');
+      __out.push('">\n    </div>\n  </div>\n\n  <div class="form-group">\n    <label class="control-label col-md-2" for="sync-type-');
     
       __out.push(__sanitize(this.cid));
     
-      __out.push('">Sync your:</label>\n    <div class="col-lg-10">\n      <select id="sync-type-');
+      __out.push('">Sync your:</label>\n    <div class="col-md-10">\n      <select id="sync-type-');
     
       __out.push(__sanitize(this.cid));
     
-      __out.push('" class="sync-type form-control">\n        <option value="playCount">Most played tracks</option>\n        <option value="dateAdded">Most recently added tracks</option>\n        <option value="both">Half and Half</option>\n      </select>\n    </div>\n  </div>\n\n  <div class="form-group">\n    <div class="col-lg-offset-2 col-lg-10">\n      <label class="checkbox">\n        <input type="checkbox" class="auto-sync" ');
+      __out.push('" class="sync-type form-control">\n        <option value="playCount">Most played tracks</option>\n        <option value="dateAdded">Most recently added tracks</option>\n        <option value="both">Half and Half</option>\n      </select>\n    </div>\n  </div>\n\n  <div class="form-group">\n    <div class="col-md-offset-2 col-md-10">\n      <label class="checkbox">\n        <input type="checkbox" class="auto-sync" ');
     
       if (this.model.auto_sync) {
         __out.push(__sanitize('checked="checked"'));
       }
     
-      __out.push('>Auto Sync\n        <br>\n        <span class="label label-danger">Read Warning Below</span>\n      </label>\n    </div>\n  </div>\n\n  <div class="form-group">\n    <div class=\'control-label col-lg-2\'>\n      <i class="fa fa-refresh fa-spin loading-spinner"></i>\n    </div>\n    <div class="col-lg-10">\n      <button type="submit" class="btn btn-primary">Save</button>\n      <button href="#" class="sync btn btn-danger">Sync</button>\n    </div>\n  </div>\n</form>\n\n<div class="alert alert-danger">\n  <h4>Important!</h4>\n  Pressing sync will wipe out all tracks currently marked for offline use and replace them\n  with your most played tracks, limited by the number of tracks you indicated. There is no way\n  to undo this action.\n  <br><br>\n  Auto Sync means that Sink will perform this action every night at midnight.\n</div>\n\n');
+      __out.push('>Auto Sync\n        <br>\n        <span class="label label-danger">Read Warning Below</span>\n      </label>\n    </div>\n  </div>\n\n  <div class="form-group">\n    <div class="col-md-offset-2 col-md-10">\n      <button type="submit" class="btn btn-primary">Save</button>\n      <button href="#" class="sync btn btn-danger">Sync</button>\n      &nbsp;\n      <i class="fa fa-refresh fa-spin loading-spinner"></i>\n    </div>\n  </div>\n</form>\n\n<div class="alert alert-danger">\n  <h4>Important!</h4>\n  Pressing sync will wipe out all tracks currently marked for offline use and replace them\n  with your most played tracks, limited by the number of tracks you indicated. There is no way\n  to undo this action.\n  <br><br>\n  Auto Sync means that Sink will perform this action every night at midnight.\n</div>\n\n');
     
     }).call(this);
     

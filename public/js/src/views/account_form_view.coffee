@@ -4,6 +4,7 @@ class window.AccountFormView extends Backbone.View
   initialize: =>
     @listenTo @model, 'change', @render
     @listenTo @model, 'sync error', @hide_loading
+    @listenTo @model, 'request', @show_loading
 
   context: =>
     model: @model.toJSON()
@@ -19,6 +20,9 @@ class window.AccountFormView extends Backbone.View
 
   hide_loading: =>
     @$('.loading-spinner').hide()
+
+  show_loading: =>
+    @$('.loading-spinner').show()
 
   submit: ($event) =>
     $event.preventDefault()

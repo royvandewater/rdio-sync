@@ -6,15 +6,15 @@
 
 <form class="form-horizontal">
   <div class="form-group">
-    <label class="control-label col-lg-2" for="number-of-tracks-<%= @cid %>">Number of tracks:</label>
-    <div class="col-lg-10">
+    <label class="control-label col-md-2" for="number-of-tracks-<%= @cid %>">Number of tracks:</label>
+    <div class="col-md-10">
       <input type="number" id="number-of-tracks-<%= @cid %>" class="number-of-tracks form-control" value="<%= @model.number_of_tracks_to_sync %>">
     </div>
   </div>
 
   <div class="form-group">
-    <label class="control-label col-lg-2" for="sync-type-<%= @cid %>">Sync your:</label>
-    <div class="col-lg-10">
+    <label class="control-label col-md-2" for="sync-type-<%= @cid %>">Sync your:</label>
+    <div class="col-md-10">
       <select id="sync-type-<%= @cid %>" class="sync-type form-control">
         <option value="playCount">Most played tracks</option>
         <option value="dateAdded">Most recently added tracks</option>
@@ -24,7 +24,7 @@
   </div>
 
   <div class="form-group">
-    <div class="col-lg-offset-2 col-lg-10">
+    <div class="col-md-offset-2 col-md-10">
       <label class="checkbox">
         <input type="checkbox" class="auto-sync" <%= 'checked="checked"' if @model.auto_sync %>>Auto Sync
         <br>
@@ -34,12 +34,11 @@
   </div>
 
   <div class="form-group">
-    <div class='control-label col-lg-2'>
-      <i class="fa fa-refresh fa-spin loading-spinner"></i>
-    </div>
-    <div class="col-lg-10">
+    <div class="col-md-offset-2 col-md-10">
       <button type="submit" class="btn btn-primary">Save</button>
       <button href="#" class="sync btn btn-danger">Sync</button>
+      &nbsp;
+      <i class="fa fa-refresh fa-spin loading-spinner"></i>
     </div>
   </div>
 </form>
