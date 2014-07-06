@@ -30,15 +30,15 @@
     "eco": "~1.1.0-rc-3",
     "coffee-script": "~1.7.1",
     "walk": "~2.3.3",
-    "async": "~0.9.0"
-  },
-  "devDependencies": {
+    "async": "~0.9.0",
     "watch": "~0.10.0",
-    "nodemon": "~1.0.20",
     "sinon-chai": "~2.5.0",
     "chai": "~1.9.1",
     "sinon": "~1.10.0",
     "mocha": "~1.19.0",
     "mapcat": "~0.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "~1.0.20"
   }
 }
