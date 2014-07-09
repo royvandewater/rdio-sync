@@ -4,7 +4,7 @@
 
 <hr>
 
-<form class="form-horizontal">
+<form class="form-horizontal" ng-submit="updateAccount()">
   <div class="form-group">
     <label class="control-label col-md-2" for="number-of-tracks-{{ account.id }}">Number of tracks:</label>
     <div class="col-md-10">
@@ -36,9 +36,9 @@
   <div class="form-group">
     <div class="col-md-offset-2 col-md-10">
       <button type="submit" class="btn btn-primary">Save</button>
-      <button href="#" class="sync btn btn-danger">Sync</button>
+      <button type="button" class="sync btn btn-danger" ng-click="syncAccount()" >Sync</button>
       &nbsp;
-      <i class="fa fa-refresh fa-spin loading-spinner" ng-hide="true"></i>
+      <i class="fa fa-refresh fa-spin loading-spinner" ng-show="loading"></i>
     </div>
   </div>
 </form>
