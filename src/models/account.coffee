@@ -39,7 +39,7 @@ class Account
     async.series [
       @_unset_all_synced_tracks
       @_set_tracks_to_sync
-      # @_update_last_synced_at
+      @_update_last_synced_at
     ], (error) =>
       if error?
         console.log "Account failed to sync. account.id: '#{@id}'"

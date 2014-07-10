@@ -38,7 +38,10 @@
       <button type="submit" class="btn btn-primary">Save</button>
       <button type="button" class="sync btn btn-danger" ng-click="syncAccount()" >Sync</button>
       &nbsp;
-      <i class="fa fa-refresh fa-spin loading-spinner" ng-show="loading"></i>
+      <span ng-show="loading">
+        <i class="fa fa-refresh fa-spin loading-spinner"></i>
+        {{ account.status }}
+      </span>
     </div>
   </div>
 </form>
