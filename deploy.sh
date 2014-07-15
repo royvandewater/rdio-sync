@@ -48,7 +48,7 @@ over_ssh_do "cd $DESTINATION_DIR && $NPM_BIN/cake build"
 
 echo "gzipping assets"
 over_ssh_do "cd $DESTINATION_DIR/public && \
-  for f in \$(find .); do \
+  for f in \$(find . -type f); do \
     gzip -9 -c \$f > \$f.gz; \
   done"
 
