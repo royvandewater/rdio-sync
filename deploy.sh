@@ -2,6 +2,7 @@
 start=`date +%s`
 
 HOST="deploy@rdio-sync.com"
+REPO="git@github.com:royvandewater/rdio-sync"
 APP_DIR=/home/deploy/apps/rdio-sync
 LOG_DIR=$APP_DIR/log
 CURRENT_DIR=$APP_DIR/current
@@ -36,10 +37,12 @@ echo "compiling locally"
 locally_do "cake build"
 echo "creating directories"
 over_ssh_do "mkdir -p $APP_DIR/releases $APP_DIR/log $APP_DIR/forever"
-echo "starting rsync"
-rsync_project
+echo "cloning git"
+over_ssh_do "git clone --depth=1 $REPO $DESTINATION_DIR"
 echo "npm install"
 over_ssh_do "cd $DESTINATION_DIR && npm install --production"
+echo "compiling remotely"
+over_ssh_do "cd $DESTINATION_DIR && cake build"
 echo "gzipping assets"
 over_ssh_do "cd $DESTINATION_DIR/public && \
   for f in \$(find .); do \

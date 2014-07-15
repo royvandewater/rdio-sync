@@ -1,0 +1,10 @@
+{
+  "folders":
+  [
+    {
+      "follow_symlinks": true,
+      "path": "/Users/roy/Octoblu/octoblu",
+      "folder_exclude_patterns": ["node_modules"]
+    }
+  ]
+}
