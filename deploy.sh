@@ -34,6 +34,40 @@ function rsync_project(){
   fi
 }
 
+function restart_forever(){
+  over_ssh_do "forever restart \
+    -l $LOG_DIR/forever.log \
+    -o $LOG_DIR/rdio-sync.log \
+    -e $LOG_DIR/rdio-sync.log \
+    --append \
+    -p $APP_DIR/forever \
+    -c coffee $CURRENT_DIR/src/application.coffee"
+}
+
+function rollback(){
+  echo "Rollback"
+  echo "Pointing current to last deploy"
+  LATEST_DEPLOY=$(over_ssh_do "ls -t $APP_DIR/releases | head -n 1")
+  PREVIOUS_DEPLOY=$(over_ssh_do "ls -t $APP_DIR/releases | head -n 2 | tail -n 1")
+  over_ssh_do "ln -nsf $APP_DIR/releases/$PREVIOUS_DEPLOY $CURRENT_DIR"
+  echo "Restarting forever"
+  restart_forever
+  echo "Moving bad release to /tmp/$LATEST_DEPLOY on remote server"
+  over_ssh_do "mv $APP_DIR/releases/$LATEST_DEPLOY /tmp/$LATEST_DEPLOY"
+  echo "Rolled back to: $PREVIOUS_DEPLOY"
+}
+
+# Rollback
+
+if [[ ! -z $1 ]]; then
+  if [ $1 == 'rollback' ]; then
+    rollback
+    exit 0
+  fi
+fi
+
+# Standard Deploy
+
 echo "creating directories"
 over_ssh_do "mkdir -p $APP_DIR/releases $APP_DIR/log $APP_DIR/forever"
 
@@ -55,14 +89,8 @@ over_ssh_do "cd $DESTINATION_DIR/public && \
 echo "linking current"
 over_ssh_do "ln -nsf $DESTINATION_DIR $CURRENT_DIR"
 
-echo "Restarting Service"
-over_ssh_do "forever restart \
-  -l $LOG_DIR/forever.log \
-  -o $LOG_DIR/rdio-sync.log \
-  -e $LOG_DIR/rdio-sync.log \
-  --append \
-  -p $APP_DIR/forever \
-  -c coffee $CURRENT_DIR/src/application.coffee"
+echo "Restarting Forever"
+restart_forever
 
 end=`date +%s`
 runtime=$((end-start))
