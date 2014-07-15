@@ -1,19 +1,18 @@
 angular.module('rdio-sync', ['ngRoute', 'ngResource'])
 .factory 'socket', ($rootScope) ->
   socket = io.connect 'http://localhost:3003'
-  return {}
-  # return {
-  #   on: (eventName, callback) ->
-  #     socket.on eventName, ->
-  #       args = arguments;
-  #       $rootScope.$apply ->
-  #         callback.apply socket, args
-  #   emit: (eventName, data, callback) ->
-  #     socket.emit eventName, data, ->
-  #       args = arguments
-  #       $rootScope.$apply ->
-  #         callback?.apply socket, args
-  # }
+  return {
+    on: (eventName, callback) ->
+      socket.on eventName, ->
+        args = arguments;
+        $rootScope.$apply ->
+          callback.apply socket, args
+    emit: (eventName, data, callback) ->
+      socket.emit eventName, data, ->
+        args = arguments
+        $rootScope.$apply ->
+          callback?.apply socket, args
+  }
 
 .config ($locationProvider, $routeProvider) ->
   $locationProvider.html5Mode true
@@ -30,10 +29,14 @@ angular.module('rdio-sync', ['ngRoute', 'ngResource'])
   Account = $resource '/api/v1/accounts/:id', {id: '@id'}, update: { method: 'PUT', isArray: false }
   $scope.loading = true
   $scope.account = Account.get id: $routeParams.id, -> $scope.loading = false
+  $scope.messages =
+    'save:start'                    : 'Saving account.'
+    'unset_all_synced_tracks:start' : 'Unsetting all synced tracks.'
+    'set_tracks_to_sync:start'      : 'Setting tracks to sync.'
 
-  # socket.on 'account:update', (data) ->
-  #   if data.account_id == $scope.account.id
-  #     $scope.account.status = data.status
+  socket.on 'account:update', (data) ->
+    if data.id == $scope.account.id
+      $scope.account.status = data.status
 
   $scope.syncAccount = ->
     $scope.loading = true

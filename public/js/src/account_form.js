@@ -3,7 +3,26 @@
   angular.module('rdio-sync', ['ngRoute', 'ngResource']).factory('socket', function($rootScope) {
     var socket;
     socket = io.connect('http://localhost:3003');
-    return {};
+    return {
+      on: function(eventName, callback) {
+        return socket.on(eventName, function() {
+          var args;
+          args = arguments;
+          return $rootScope.$apply(function() {
+            return callback.apply(socket, args);
+          });
+        });
+      },
+      emit: function(eventName, data, callback) {
+        return socket.emit(eventName, data, function() {
+          var args;
+          args = arguments;
+          return $rootScope.$apply(function() {
+            return callback != null ? callback.apply(socket, args) : void 0;
+          });
+        });
+      }
+    };
   }).config(function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode(true);
     return $routeProvider.when('/', {
@@ -29,6 +48,16 @@
       id: $routeParams.id
     }, function() {
       return $scope.loading = false;
+    });
+    $scope.messages = {
+      'save:start': 'Saving account.',
+      'unset_all_synced_tracks:start': 'Unsetting all synced tracks.',
+      'set_tracks_to_sync:start': 'Setting tracks to sync.'
+    };
+    socket.on('account:update', function(data) {
+      if (data.id === $scope.account.id) {
+        return $scope.account.status = data.status;
+      }
     });
     $scope.syncAccount = function() {
       $scope.loading = true;

@@ -37,7 +37,8 @@
     "mocha": "~1.19.0",
     "mapcat": "~0.2.0",
     "moment": "~2.7.0",
-    "socket.io": "~1.0.6"
+    "socket.io": "~1.0.6",
+    "backbone": "~1.1.2"
   },
   "devDependencies": {
     "nodemon": "~1.0.20"

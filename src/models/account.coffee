@@ -2,9 +2,12 @@ _        = require 'underscore'
 async    = require 'async'
 Rdio     = require '../../lib/rdio'
 RdioSync = require './rdio_sync'
+Backbone = require 'backbone'
 
 class Account
   constructor: (attributes, options={}) ->
+    _.extend this, Backbone.Events
+
     @table = options.table ? new Account.table()
     @set(attributes ? {}) unless options.table?
 
@@ -12,7 +15,9 @@ class Account
     @table.remove callback
 
   fetch: (callback=->) =>
+    @trigger 'fetch:start'
     Account.table.get @id, (error, @table) =>
+      @trigger 'fetch:stop'
       callback error, this
 
   get: (attribute) =>
@@ -25,9 +30,11 @@ class Account
     [@get('rdio_key'), @get('rdio_secret')]
 
   save: (callback=->) =>
-    @table.id = @id
+    @table.id = parseInt(@id)
+    @trigger 'save:start'
     @table.save (error, table) =>
       @id = @table.id
+      @trigger 'save:end'
       callback error, this
 
   set: (attributes) =>
@@ -36,6 +43,7 @@ class Account
       @table[key] = value
 
   sync: (callback=->) =>
+    @trigger 'sync:start'
     async.series [
       @_unset_all_synced_tracks
       @_set_tracks_to_sync
@@ -76,9 +84,12 @@ class Account
     @rdio().recently_added_tracks count, callback
 
   _set_tracks_to_sync: (callback=->) =>
+    @trigger 'set_tracks_to_sync:start'
     @_get_tracks_to_sync_keys (error, tracks_to_sync_keys) =>
       return callback error if error?
-      @rdio().set_sync true, tracks_to_sync_keys, callback
+      @rdio().set_sync true, tracks_to_sync_keys, =>
+        @trigger 'set_tracks_to_sync:end'
+        callback.apply this, arguments
 
   _tracks_to_sync: (callback=->) =>
     count = @get('number_of_tracks_to_sync') ? 0
@@ -90,12 +101,18 @@ class Account
       else throw "Invalid sync_type: #{sync_type}"
 
   _unset_all_synced_tracks: (callback=->) =>
+    @trigger 'unset_all_synced_tracks:start'
     @_get_synced_track_keys (error, synced_track_keys) =>
       callback error if error?
-      @rdio().set_sync false, synced_track_keys, callback
+      @rdio().set_sync false, synced_track_keys, =>
+        @trigger 'unset_all_synced_tracks:end'
+        callback.apply this, arguments
 
   _update_last_synced_at: (callback=->) =>
-    @update_attributes {last_synced_at: new Date}, callback
+    @trigger 'update_last_synced_at:start'
+    @update_attributes {last_synced_at: new Date}, =>
+      @trigger 'update_last_synced_at:end'
+      callback.apply this, arguments
 
   @where: (filters, callback=->) =>
     Account.table.find filters, (error, accounts) =>

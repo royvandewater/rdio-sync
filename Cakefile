@@ -39,6 +39,7 @@ task 'dev', 'watch sources and run tests', ->
   nodemon
     ext: 'coffee'
     script: 'src/application.coffee'
+    ignore: ['public', 'node_modules']
     verbose: true
 
 
