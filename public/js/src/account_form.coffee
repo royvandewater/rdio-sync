@@ -20,15 +20,15 @@ angular.module('rdio-sync', ['ngRoute', 'ngResource'])
   $routeProvider
     .when '/',
       templateUrl: '/landing.html'
-    .when '/accounts/:id',
+    .when '/account',
       controller:  'AcountsController'
       templateUrl: '/account.html'
     .otherwise redirectTo: '/'
 
 .controller 'AcountsController', ($scope, $resource, $routeParams, socket) ->
-  Account = $resource '/api/v1/accounts/:id', {id: '@id'}, update: { method: 'PUT', isArray: false }
+  Account = $resource '/api/v1/account', {}, update: { method: 'PUT', isArray: false }
   $scope.loading = true
-  $scope.account = Account.get id: $routeParams.id, -> $scope.loading = false
+  $scope.account = Account.get {}, -> $scope.loading = false
   $scope.messages =
     'save:start'                    : 'Saving account.'
     'unset_all_synced_tracks:start' : 'Unsetting all synced tracks.'

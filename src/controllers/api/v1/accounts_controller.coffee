@@ -6,20 +6,14 @@ class AccountsController
     @io = options.io
 
   show: (request, response) =>
-    account = new Account id: request.params.account_id
-    account.on 'all', (the_event) =>
-      @io.emit 'account:update', {id: account.id, status: the_event}
-
-    account.fetch (error, model) =>
+    @_fetch_account request, (error, account) =>
       return response.send(error, 404) if error?
       response.send account.toJSON()
 
   update: (request, response) =>
-    account = new Account id: request.params.account_id
-    account.on 'all', (the_event) =>
-      @io.emit 'account:update', {id: account.id, status: the_event}
+    @_fetch_account request, (error, account) =>
+      return response.send(error, 404) if error?
 
-    account.fetch =>
       account.set @_params request
       account.save (error, account) =>
         return response.send(error, 422) if error?
@@ -28,6 +22,15 @@ class AccountsController
         account.sync (error) =>
           return response.send(error, 404) if error?
           return response.send null, 204
+
+  _fetch_account: (request, callback=->) =>
+    rdio_key = request.cookies.get('rdio_key')
+
+    Account.find_by_rdio_key rdio_key, (error, account) =>
+      account?.on 'all', (the_event) =>
+        @io.emit 'account:update', {id: account.id, status: the_event}
+
+      callback error, account
 
   _params: (request) =>
     auto_sync:                request.body.auto_sync

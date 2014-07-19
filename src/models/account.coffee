@@ -114,6 +114,15 @@ class Account
       @trigger 'update_last_synced_at:end'
       callback.apply this, arguments
 
+  @find_by_rdio_key: (rdio_key, callback=->) =>
+    Account.table.find {rdio_key: rdio_key}, (error, accounts) =>
+      account_table = _.first accounts
+
+      if account_table
+        account = new Account({}, table: account_table)
+
+      callback error, account
+
   @where: (filters, callback=->) =>
     Account.table.find filters, (error, accounts) =>
       callback error, _.map(accounts, (account) -> new Account({}, table: account))
@@ -172,7 +181,6 @@ class Account
     username:      {type: 'text'}
     rdio_key:      {type: 'text'}
     rdio_secret:   {type: 'text'}
-    session_token: {type: 'text'}
     sync_type:     {type: 'text', defaultValue: 'playCount'}
     auto_sync:     {type: 'boolean', defaultValue: false, required: true}
     number_of_tracks_to_sync: {type: 'number', defaultValue: 200}

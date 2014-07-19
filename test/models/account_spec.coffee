@@ -35,7 +35,6 @@ describe 'Account', ->
           auto_sync: true
           last_synced_at: new Date('2014-05-04')
           sync_type: 'both'
-          session_token: '1234'
 
         @sut = new Account _.clone(@attributes)
         @sut.save callback
@@ -60,7 +59,6 @@ describe 'Account', ->
         auto_sync: false
         last_synced_at: new Date('2013-02-01')
         sync_type: 'n/a'
-        session_token: 'token'
       @sut = new Account @attributes
 
     it 'should include the all the attributes', ->

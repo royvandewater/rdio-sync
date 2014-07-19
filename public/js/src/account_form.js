@@ -27,7 +27,7 @@
     $locationProvider.html5Mode(true);
     return $routeProvider.when('/', {
       templateUrl: '/landing.html'
-    }).when('/accounts/:id', {
+    }).when('/account', {
       controller: 'AcountsController',
       templateUrl: '/account.html'
     }).otherwise({
@@ -35,18 +35,14 @@
     });
   }).controller('AcountsController', function($scope, $resource, $routeParams, socket) {
     var Account;
-    Account = $resource('/api/v1/accounts/:id', {
-      id: '@id'
-    }, {
+    Account = $resource('/api/v1/account', {}, {
       update: {
         method: 'PUT',
         isArray: false
       }
     });
     $scope.loading = true;
-    $scope.account = Account.get({
-      id: $routeParams.id
-    }, function() {
+    $scope.account = Account.get({}, function() {
       return $scope.loading = false;
     });
     $scope.messages = {
