@@ -20,6 +20,8 @@ describe 'AccountFormController', ->
       expect(@scope.account).to.deep.equal({thing: true})
 
 class FakeAccountService
-  getAccount: (callback=->) ->
+  getAccount: ->
     @getAccount.called = true
-    @getAccount.resolve = callback
+    @getAccount.resolve = => @getAccountCallback.apply this, arguments
+    return {then: (@getAccountCallback=->) =>}
+
