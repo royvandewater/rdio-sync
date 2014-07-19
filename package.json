@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "nodemon": "~1.0.20",
-    "angular": "~1.2.19"
+    "angular": "~1.2.19",
+    "chai-as-promised": "~4.1.1"
   }
 }

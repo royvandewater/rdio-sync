@@ -1,4 +1,6 @@
 angular.module('rdio-sync')
-.controller 'AccountFormController', (AccountService) ->
-  AccountService.get()
+.controller 'AccountFormController', ($scope, AccountService) ->
+
+  AccountService.getAccount (account) ->
+    $scope.account = account
 

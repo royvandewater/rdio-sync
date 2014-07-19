@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "account_form_controller.js",
+  "sourceRoot": "../../../..",
+  "sources": [
+    "public/js/src/controllers/account_form_controller.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,EAAA,OAAO,CAAC,MAAR,CAAe,WAAf,CACA,CAAC,UADD,CACY,uBADZ,EACqC,SAAC,MAAD,EAAS,cAAT,GAAA;WAEnC,cAAc,CAAC,UAAf,CAA0B,SAAC,OAAD,GAAA;aACxB,MAAM,CAAC,OAAP,GAAiB,QADO;IAAA,CAA1B,EAFmC;EAAA,CADrC,CAAA,CAAA;AAAA"
+}

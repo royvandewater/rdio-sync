@@ -2,6 +2,7 @@ angular   = require 'angular'
 chai      = require 'chai'
 sinon     = require 'sinon'
 
+chai.use require 'chai-as-promised'
 chai.use require 'sinon-chai'
 
 angular.module 'rdio-sync', []
@@ -11,10 +12,13 @@ global.expect    = chai.expect
 global.sinon     = sinon
 
 
-global.inject = (name, dependencies) ->
+global.inject = (name) ->
   $injector   = angular.injector ['ng', 'rdio-sync']
-  $controller = $injector.get '$controller'
-  $rootScope  = $injector.get('$rootScope');
-  $scope      = $rootScope.$new();
+  $injector.get name
 
+global.injectController = (name, dependencies={}) ->
+  # $rootScope  = $injector.get '$rootScope'
+  # $scope      = $rootScope.$new();
+
+  $controller = inject '$controller'
   $controller name, dependencies

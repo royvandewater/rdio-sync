@@ -33,6 +33,7 @@ task 'dev', 'watch sources and run tests', ->
 
   watchTree 'src', run_tests
   watchTree 'test', run_tests
+  watchTree 'public/js/src', run_tests
   run_tests()
 
   nodemon     = require 'nodemon'
@@ -42,8 +43,7 @@ task 'dev', 'watch sources and run tests', ->
     ignore: ['public', 'node_modules']
     verbose: true
 
-
-run_tests = (arg1) ->
+run_tests_now = (arg1) ->
   return if _.isObject arg1
   TEST_ARGS = [
     '--compilers', 'coffee:coffee-script/register'
@@ -55,3 +55,4 @@ run_tests = (arg1) ->
 
   ]
   spawn 'mocha', TEST_ARGS, stdio: 'inherit'
+run_tests = _.throttle run_tests_now, 1000, trailing: false
