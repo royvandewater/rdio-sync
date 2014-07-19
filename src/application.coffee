@@ -6,6 +6,7 @@ http                  = require 'http'
 socketio              = require 'socket.io'
 path                  = require 'path'
 orm                   = require 'orm'
+Cookies               = require 'cookies'
 Account               = require './models/account'
 AccountsController    = require './controllers/accounts_controller'
 AccountsApiController = require './controllers/api/v1/accounts_controller'
@@ -17,6 +18,7 @@ app = express()
 app.use morgan(format: 'dev')
 app.use body_parser()
 app.use express.static path.join(__dirname, '../public')
+app.use Cookies.express 'rdio_key'
 
 # development only
 app.use errorhandler() if 'development' == app.get('env')

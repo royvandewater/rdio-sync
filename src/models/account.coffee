@@ -30,10 +30,10 @@ class Account
     [@get('rdio_key'), @get('rdio_secret')]
 
   save: (callback=->) =>
-    @table.id = parseInt(@id)
+    @table.id = @id
     @trigger 'save:start'
     @table.save (error, table) =>
-      @id = @table.id
+      @id = parseInt(@table.id)
       @trigger 'save:end'
       callback error, this
 

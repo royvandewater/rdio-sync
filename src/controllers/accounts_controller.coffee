@@ -1,3 +1,4 @@
+moment  = require 'moment'
 Account = require '../models/account'
 
 class AccountsController
@@ -15,6 +16,7 @@ class AccountsController
 
     Account.complete_rdio_authentication account_id, oauth_verifier, (error, account) =>
       throw error if error?
+      response.cookies.set 'rdio_key', account.get('rdio_key'), expires: moment().add('months', 1).toDate(), httpOnly: false
       response.redirect "http://#{request.headers.host}/accounts/#{account.id}"
 
 
