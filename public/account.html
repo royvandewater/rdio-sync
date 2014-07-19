@@ -1,21 +1,21 @@
 <h3>Sync Settings</h3>
 
-<p>Manage what syncs to account: <strong><%= @model.username %></strong></p>
+<p>Manage what syncs to account: <strong>{{ account.username }}</strong></p>
 
 <hr>
 
-<form class="form-horizontal">
+<form class="form-horizontal" ng-submit="updateAccount()">
   <div class="form-group">
-    <label class="control-label col-md-2" for="number-of-tracks-<%= @cid %>">Number of tracks:</label>
+    <label class="control-label col-md-2" for="number-of-tracks-{{ account.id }}">Number of tracks:</label>
     <div class="col-md-10">
-      <input type="number" id="number-of-tracks-<%= @cid %>" class="number-of-tracks form-control" value="<%= @model.number_of_tracks_to_sync %>">
+      <input ng-model="account.number_of_tracks_to_sync" type="number" id="number-of-tracks-{{ account.id }}" class="number-of-tracks form-control">
     </div>
   </div>
 
   <div class="form-group">
-    <label class="control-label col-md-2" for="sync-type-<%= @cid %>">Sync your:</label>
+    <label class="control-label col-md-2" for="sync-type-{{ account.id }}">Sync your:</label>
     <div class="col-md-10">
-      <select id="sync-type-<%= @cid %>" class="sync-type form-control">
+      <select ng-model="account.sync_type" id="sync-type-{{ account.id }}" class="sync-type form-control">
         <option value="playCount">Most played tracks</option>
         <option value="dateAdded">Most recently added tracks</option>
         <option value="both">Half and Half</option>
@@ -26,7 +26,7 @@
   <div class="form-group">
     <div class="col-md-offset-2 col-md-10">
       <label class="checkbox">
-        <input type="checkbox" class="auto-sync" <%= 'checked="checked"' if @model.auto_sync %>>Auto Sync
+        <input ng-model="account.auto_sync" type="checkbox" class="auto-sync">Auto Sync
         <br>
         <span class="label label-danger">Read Warning Below</span>
       </label>
@@ -36,9 +36,12 @@
   <div class="form-group">
     <div class="col-md-offset-2 col-md-10">
       <button type="submit" class="btn btn-primary">Save</button>
-      <button href="#" class="sync btn btn-danger">Sync</button>
+      <button type="button" class="sync btn btn-danger" ng-click="syncAccount()" >Sync</button>
       &nbsp;
-      <i class="fa fa-refresh fa-spin loading-spinner"></i>
+      <span ng-show="loading">
+        <i class="fa fa-refresh fa-spin loading-spinner"></i>
+        {{ messages[account.status] }}
+      </span>
     </div>
   </div>
 </form>

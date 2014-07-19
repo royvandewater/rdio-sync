@@ -3,14 +3,10 @@ require 'coffee-script/register'
 {watchTree}    = require 'watch'
 _              = require 'underscore'
 moment         = require 'moment'
-EcoCompiler    = require './src/util/eco_compiler'
 CoffeeCompiler = require './src/util/coffee_compiler'
 Account        = require './src/models/account'
 orm            = require 'orm'
 
-
-template_compiler = new EcoCompiler
-  output_file: 'public/js/templates.js'
 
 coffee_compiler = new CoffeeCompiler
   map_output_file:        'public/js/package.map'
@@ -27,7 +23,6 @@ task 'sync', 'syncs all accounts marked for auto sync', ->
 
 task 'build', 'compile client side assets', ->
   coffee_compiler.compile_directory 'public/js/src'
-  template_compiler.compile_directory 'public/js/src/templates'
 
 task 'test', 'run all the tests', ->
   run_tests()
@@ -35,9 +30,6 @@ task 'test', 'run all the tests', ->
 task 'dev', 'watch sources and run tests', ->
   watchTree 'public/js/src', coffee_compiler.compile_file
   coffee_compiler.compile_directory 'public/js/src'
-
-  watchTree 'public/js/src/templates', template_compiler.compile_file
-  template_compiler.compile_directory 'public/js/src/templates'
 
   watchTree 'src', run_tests
   watchTree 'test', run_tests
@@ -47,6 +39,7 @@ task 'dev', 'watch sources and run tests', ->
   nodemon
     ext: 'coffee'
     script: 'src/application.coffee'
+    ignore: ['public', 'node_modules']
     verbose: true
 
 
@@ -62,11 +55,3 @@ run_tests = (arg1) ->
 
   ]
   spawn 'mocha', TEST_ARGS, stdio: 'inherit'
-
-# compile_templates = EcoUtil.create_compiler 'public/js/src/templates/', 'public/js/templates.js'
-# compile_coffeescript = CoffeeUtil.create_compiler
-#                           directory:  'public/js/src'
-#                           javascript: 'public/js/package.js'
-#                           map_file:   'public/js/package.map'
-#                           done: ->
-#                             console.log "#{moment().format 'hh:mm:ss'} - compiled public/js/package.js"
