@@ -4,7 +4,8 @@
   "description": "Rdio Sync allows you to auto-sync all your favorite songs to your mobile phone.",
   "main": "src/application.coffee",
   "scripts": {
-    "test": "cake test"
+    "test": "cake test",
+    "start": "cake build && coffee src/application.coffee"
   },
   "repository": {
     "type": "git",

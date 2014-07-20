@@ -4,3 +4,6 @@ angular.module('rdio-sync')
   AccountService.getAccount().then (account) ->
     $scope.account = account
 
+  $scope.updateAccount = ->
+    AccountService.updateAccount $scope.account
+
