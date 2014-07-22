@@ -17,6 +17,7 @@ module.exports = function(config) {
       'public/spare_assets/js/angular.js',
       'public/spare_assets/js/angular-*.js',
       'public/spare_assets/js/chai.js',
+      'public/spare_assets/js/underscore.js',
       'public/js/src/**/*.coffee',
       'test-client/client_test_helper.coffee',
       'test-client/**/*.coffee'

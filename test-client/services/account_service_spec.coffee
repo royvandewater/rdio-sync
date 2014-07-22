@@ -19,6 +19,14 @@ describe 'AccountService', ->
           done()
         @httpBackend.flush()
 
+  describe '-> syncAccount', ->
+    describe 'when syncAccount is called', ->
+      it 'should call http.put and add sync_now:true to the data', (done) ->
+        @httpBackend.expectPUT('/api/v1/account', {a: 'b', sync_now: true}).respond 204, null
+        @sut.syncAccount({a: 'b'}).success =>
+          done()
+        @httpBackend.flush()
+
   describe '-> updateAccount', ->
     describe 'when updateAccount is called', ->
       it 'should call http.put', (done) ->

@@ -4,10 +4,14 @@ angular.module('rdio-sync')
   getAccount = ->
     $http.get '/api/v1/account'
 
+  syncAccount = (data) ->
+    @updateAccount _.extend({sync_now: true}, data)
+
   updateAccount = (data) ->
     $http.put '/api/v1/account', data
 
   return {
     getAccount:    getAccount
+    syncAccount:   syncAccount
     updateAccount: updateAccount
   }
