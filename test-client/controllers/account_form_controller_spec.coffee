@@ -1,10 +1,12 @@
-require '../../../public/js/src/controllers/account_form_controller.coffee'
-
 describe 'AccountFormController', ->
-  beforeEach ->
+  beforeEach (done=->) ->
+    module 'rdio-sync'
+
     @fakeAccountService = new FakeAccountService
-    @scope = inject('$rootScope').$new()
-    @sut = injectController 'AccountFormController', {'$scope': @scope, AccountService: @fakeAccountService}
+    inject ($controller, $rootScope) =>
+      @scope = $rootScope.$new()
+      @sut   = $controller 'AccountFormController', {$scope: @scope, AccountService: @fakeAccountService}
+      done()
 
   it 'should instantiate', ->
     expect(@sut).to.exist
@@ -23,6 +25,16 @@ describe 'AccountFormController', ->
     beforeEach ->
       @scope.account = {id: 3, sync_type: 'both'}
 
+    describe '-> syncAccount', ->
+      beforeEach ->
+        @scope.syncAccount()
+
+      it 'should call syncAccount on the AccountService', ->
+        expect(@fakeAccountService.syncAccount.called).to.be.true
+
+      it 'should call AccountService.syncAccount with an account', ->
+        expect(@fakeAccountService.syncAccount.calledWith).to.deep.equal @scope.account
+
     describe '-> updateAccount', ->
       beforeEach ->
         @scope.updateAccount()
@@ -38,6 +50,10 @@ class FakeAccountService
     @getAccount.called = true
     @getAccount.resolve = => @getAccountCallback.apply this, arguments
     return {then: (@getAccountCallback=->) =>}
+
+  syncAccount: (arg) ->
+    @syncAccount.called = true
+    @syncAccount.calledWith = arg
 
   updateAccount: (arg) ->
     @updateAccount.called = true

@@ -46,6 +46,7 @@ task 'dev', 'watch sources and run tests', ->
 run_tests_now = (arg1) ->
   return if _.isObject arg1
   TEST_ARGS = [
+    # 'debug'
     '--compilers', 'coffee:coffee-script/register'
     '--require', 'coffee-script'
     '--require', 'test/test_helper.coffee'
@@ -55,4 +56,5 @@ run_tests_now = (arg1) ->
 
   ]
   spawn 'mocha', TEST_ARGS, stdio: 'inherit'
+
 run_tests = _.throttle run_tests_now, 1000, trailing: false

@@ -1,0 +1,57 @@
+<h3>Sync Settings</h3>
+
+<p>Manage what syncs to account: <strong>{{ account.username }}</strong></p>
+
+<hr>
+
+<form class="form-horizontal" ng-submit="updateAccount()">
+  <div class="form-group">
+    <label class="control-label col-md-2" for="number-of-tracks-{{ account.id }}">Number of tracks:</label>
+    <div class="col-md-10">
+      <input ng-model="account.number_of_tracks_to_sync" type="number" id="number-of-tracks-{{ account.id }}" class="number-of-tracks form-control">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-md-2" for="sync-type-{{ account.id }}">Sync your:</label>
+    <div class="col-md-10">
+      <select ng-model="account.sync_type" id="sync-type-{{ account.id }}" class="sync-type form-control">
+        <option value="playCount">Most played tracks</option>
+        <option value="dateAdded">Most recently added tracks</option>
+        <option value="both">Half and Half</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+      <label class="checkbox">
+        <input ng-model="account.auto_sync" type="checkbox" class="auto-sync">Auto Sync
+        <br>
+        <span class="label label-danger">Read Warning Below</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="sync btn btn-danger" ng-click="syncAccount()" >Sync</button>
+      &nbsp;
+      <span ng-show="account.loading">
+        <i class="fa fa-refresh fa-spin loading-spinner"></i>
+        {{ messages[account.status] }}
+      </span>
+    </div>
+  </div>
+</form>
+
+<div class="alert alert-danger">
+  <h4>Important!</h4>
+  Pressing sync will wipe out all tracks currently marked for offline use and replace them
+  with your most played tracks, limited by the number of tracks you indicated. There is no way
+  to undo this action.
+  <br><br>
+  Auto Sync means that Sink will perform this action every night at midnight.
+</div>
+

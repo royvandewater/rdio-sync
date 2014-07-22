@@ -4,7 +4,7 @@
   "description": "Rdio Sync allows you to auto-sync all your favorite songs to your mobile phone.",
   "main": "src/application.coffee",
   "scripts": {
-    "test": "cake test",
+    "test": "cake test && karma start --single-run",
     "start": "cake build && coffee src/application.coffee"
   },
   "repository": {
@@ -45,6 +45,11 @@
   "devDependencies": {
     "nodemon": "~1.0.20",
     "angular": "~1.2.19",
-    "chai-as-promised": "~4.1.1"
+    "chai-as-promised": "~4.1.1",
+    "karma": "~0.12.17",
+    "karma-mocha": "~0.1.6",
+    "karma-chrome-launcher": "~0.1.4",
+    "karma-coffee-preprocessor": "~0.2.1",
+    "karma-phantomjs-launcher": "~0.1.4"
   }
 }

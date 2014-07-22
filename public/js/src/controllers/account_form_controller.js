@@ -4,6 +4,9 @@
     AccountService.getAccount().then(function(account) {
       return $scope.account = account;
     });
+    $scope.syncAccount = function() {
+      return AccountService.syncAccount($scope.account);
+    };
     return $scope.updateAccount = function() {
       return AccountService.updateAccount($scope.account);
     };

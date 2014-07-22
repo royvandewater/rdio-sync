@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "account_service.js",
+  "sourceRoot": "../../../..",
+  "sources": [
+    "public/js/src/services/account_service.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,EAAA,OAAO,CAAC,MAAR,CAAe,WAAf,CACM,CAAC,OADP,CACe,gBADf,EACiC,SAAA,GAAA;WAE/B,IAAI,CAAC,UAAL,GAAkB,SAAA,GAAA,EAFa;EAAA,CADjC,CAAA,CAAA;AAAA"
+}

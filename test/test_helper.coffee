@@ -1,24 +1,24 @@
-angular   = require 'angular'
 chai      = require 'chai'
 sinon     = require 'sinon'
 
-chai.use require 'chai-as-promised'
 chai.use require 'sinon-chai'
-
-angular.module 'rdio-sync', []
-global.angular   = angular
 
 global.expect    = chai.expect
 global.sinon     = sinon
 
+# angular   = require 'angular'
+# angular.module 'rdio-sync', []
+# global.angular   = angular
+# global.initializeInjector = ->
+#   global.$injector = angular.injector ['ng', 'rdio-sync']
+#   global.inject    = $injector.invoke
 
-global.inject = (name) ->
-  $injector   = angular.injector ['ng', 'rdio-sync']
-  $injector.get name
+# global.injectModule = (name) ->
+#   $injector.get name
 
-global.injectController = (name, dependencies={}) ->
-  # $rootScope  = $injector.get '$rootScope'
-  # $scope      = $rootScope.$new();
+# global.injectController = (name, dependencies={}) ->
+#   $controller = injectModule '$controller'
+#   $controller name, dependencies
 
-  $controller = inject '$controller'
-  $controller name, dependencies
+# global.injectService = (name, dependencies={}) ->
+#   injectModule name
