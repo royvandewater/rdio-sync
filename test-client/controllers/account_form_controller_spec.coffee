@@ -49,7 +49,7 @@ class FakeAccountService
   getAccount: ->
     @getAccount.called = true
     @getAccount.resolve = => @getAccountCallback.apply this, arguments
-    return {then: (@getAccountCallback=->) =>}
+    return {success: (@getAccountCallback=->) =>}
 
   syncAccount: (arg) ->
     @syncAccount.called = true

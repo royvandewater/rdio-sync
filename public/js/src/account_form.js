@@ -28,47 +28,11 @@
     return $routeProvider.when('/', {
       templateUrl: '/landing.html'
     }).when('/account', {
-      controller: 'AcountsController',
+      controller: 'AccountFormController',
       templateUrl: '/account.html'
     }).otherwise({
       redirectTo: '/'
     });
-  }).controller('AcountsController', function($scope, $resource, $routeParams, socket) {
-    var Account;
-    Account = $resource('/api/v1/account', {}, {
-      update: {
-        method: 'PUT',
-        isArray: false
-      }
-    });
-    $scope.loading = true;
-    $scope.account = Account.get({}, function() {
-      return $scope.loading = false;
-    });
-    $scope.messages = {
-      'save:start': 'Saving account.',
-      'unset_all_synced_tracks:start': 'Unsetting all synced tracks.',
-      'set_tracks_to_sync:start': 'Setting tracks to sync.'
-    };
-    socket.on('account:update', function(data) {
-      if (data.id === $scope.account.id) {
-        return $scope.account.status = data.status;
-      }
-    });
-    $scope.syncAccount = function() {
-      $scope.loading = true;
-      $scope.account.sync_now = true;
-      return $scope.account.$update(function() {
-        $scope.loading = false;
-        return $scope.account.sync_now = false;
-      });
-    };
-    return $scope.updateAccount = function() {
-      $scope.loading = true;
-      return $scope.account.$update(function() {
-        return $scope.loading = false;
-      });
-    };
   });
 
 }).call(this);
