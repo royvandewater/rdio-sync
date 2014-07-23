@@ -1,8 +1,7 @@
 angular.module('rdio-sync')
-      .service 'AccountService', ($http, FooService) ->
+      .service 'AccountService', ($http) ->
 
   getAccount: ->
-    FooService.bar()
     $http.get '/api/v1/account'
 
   syncAccount: (data) ->

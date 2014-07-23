@@ -2,11 +2,6 @@ describe 'AccountService', ->
   beforeEach (done=->) ->
     module 'rdio-sync'
 
-    angular.mock.module ($provide) =>
-      @FakeFooService = new FakeFooService
-      $provide.value 'FooService', @FakeFooService
-      null
-
     inject ($httpBackend, AccountService) =>
       @httpBackend = $httpBackend
       @sut         = AccountService
@@ -24,10 +19,6 @@ describe 'AccountService', ->
           done()
         @httpBackend.flush()
 
-      it 'should call foo on FooService', ->
-        @sut.getAccount()
-        expect(@FakeFooService.bar.called).to.be.true
-
   describe '-> syncAccount', ->
     describe 'when syncAccount is called', ->
       it 'should call http.put and add sync_now:true to the data', (done) ->
@@ -44,7 +35,3 @@ describe 'AccountService', ->
         @sut.updateAccount(data).success =>
           done()
         @httpBackend.flush()
-
-class FakeFooService
-  bar: =>
-    @bar.called = true
