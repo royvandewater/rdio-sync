@@ -2,8 +2,8 @@ describe 'AccountFormController', ->
   beforeEach (done=->) ->
     module 'rdio-sync'
 
-    @fakeAccountService = new FakeAccountService
     inject ($controller, $rootScope) =>
+      @fakeAccountService = new FakeAccountService
       @scope = $rootScope.$new()
       @sut   = $controller 'AccountFormController', {$scope: @scope, AccountService: @fakeAccountService}
       done()
