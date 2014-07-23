@@ -19,6 +19,7 @@ describe 'AccountService', ->
           done()
         @httpBackend.flush()
 
+
   describe '-> syncAccount', ->
     describe 'when syncAccount is called', ->
       it 'should call http.put and add sync_now:true to the data', (done) ->
@@ -36,6 +37,6 @@ describe 'AccountService', ->
           done()
         @httpBackend.flush()
 
-
-
-
+class FooService
+  bar: =>
+    @bar.called = true
