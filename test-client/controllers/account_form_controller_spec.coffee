@@ -14,6 +14,9 @@ describe 'AccountFormController', ->
   it 'should call get on the accountService', ->
     expect(@fakeAccountService.getAccount.called).to.be.true
 
+  it 'should have indicate that its loading on the scope', ->
+    expect(@scope.account.loading).to.be.true
+
   describe 'when the getAccount promise resolves', ->
     beforeEach ->
       @fakeAccountService.getAccount.resolve({thing: true})
@@ -35,6 +38,16 @@ describe 'AccountFormController', ->
       it 'should call AccountService.syncAccount with an account', ->
         expect(@fakeAccountService.syncAccount.calledWith).to.deep.equal @scope.account
 
+      it 'should set loading on the account to true', ->
+        expect(@scope.account.loading).to.be.true
+
+      describe 'when the syncAccount promise resolves', ->
+        beforeEach ->
+          @fakeAccountService.syncAccount.resolve()
+
+        it 'should set loading on the account to false', ->
+          expect(@scope.account.loading).to.be.false
+
     describe '-> updateAccount', ->
       beforeEach ->
         @scope.updateAccount()
@@ -45,6 +58,16 @@ describe 'AccountFormController', ->
       it 'should call AccountService.updateAccount with an account', ->
         expect(@fakeAccountService.updateAccount.calledWith).to.deep.equal @scope.account
 
+      it 'should set loading on the account to true', ->
+        expect(@scope.account.loading).to.be.true
+
+      describe 'when updateAccount resolves', ->
+        beforeEach ->
+          @fakeAccountService.updateAccount.resolve()
+
+        it 'should set loading on the account to false', ->
+          expect(@scope.account.loading).to.be.false
+
 class FakeAccountService
   getAccount: ->
     @getAccount.called = true
@@ -54,8 +77,12 @@ class FakeAccountService
   syncAccount: (arg) ->
     @syncAccount.called = true
     @syncAccount.calledWith = arg
+    @syncAccount.resolve = => @syncAccountCallback.apply this, arguments
+    return {success: (@syncAccountCallback=->) =>}
 
   updateAccount: (arg) ->
     @updateAccount.called = true
     @updateAccount.calledWith = arg
+    @updateAccount.resolve = => @updateAccountCallback.apply this, arguments
+    return {success: (@updateAccountCallback=->) =>}
 
