@@ -43,8 +43,6 @@ function restart_forever(){
     -p $APP_DIR/forever \
     -c coffee $CURRENT_DIR/src/application.coffee"
 }
-restart_forever
-exit 1
 
 function rollback(){
   echo "Rollback"
