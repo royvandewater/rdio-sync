@@ -35,7 +35,7 @@ function rsync_project(){
 }
 
 function restart_forever(){
-  over_ssh_do "forever restart \
+  echo "forever restart \
     -l $LOG_DIR/forever.log \
     -o $LOG_DIR/rdio-sync.log \
     -e $LOG_DIR/rdio-sync.log \
@@ -43,6 +43,8 @@ function restart_forever(){
     -p $APP_DIR/forever \
     -c coffee $CURRENT_DIR/src/application.coffee"
 }
+restart_forever
+exit 1
 
 function rollback(){
   echo "Rollback"
