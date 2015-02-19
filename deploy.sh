@@ -2,7 +2,7 @@
 start=`date +%s`
 
 HOST="deploy@rdio-sync.com"
-REPO="git@github.com:royvandewater/rdio-sync"
+REPO="https://github.com/royvandewater/rdio-sync"
 APP_DIR=/home/deploy/apps/rdio-sync
 LOG_DIR=$APP_DIR/log
 CURRENT_DIR=$APP_DIR/current
