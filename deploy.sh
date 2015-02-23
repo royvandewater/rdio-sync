@@ -42,7 +42,8 @@ function restart_forever(){
     -e $LOG_DIR/rdio-sync.log \
     --append \
     -p $APP_DIR/forever \
-    -c coffee $CURRENT_DIR/src/application.coffee"
+    -c 'npm start' \
+    $CURRENT_DIR"
 }
 
 function rollback(){
