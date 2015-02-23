@@ -8,6 +8,7 @@ LOG_DIR=$APP_DIR/log
 CURRENT_DIR=$APP_DIR/current
 DESTINATION_DIR=$APP_DIR/releases/`date +%Y-%m-%d-%H-%M-%S`
 NPM_BIN="node_modules/.bin"
+FOREVER_CMD=restart
 
 function locally_do(){
   COMMAND=$@
@@ -35,7 +36,7 @@ function rsync_project(){
 }
 
 function restart_forever(){
-  over_ssh_do "forever restart \
+  over_ssh_do "forever $FOREVER_CMD \
     -l $LOG_DIR/forever.log \
     -o $LOG_DIR/rdio-sync.log \
     -e $LOG_DIR/rdio-sync.log \
@@ -63,6 +64,10 @@ if [[ ! -z $1 ]]; then
   if [ $1 == 'rollback' ]; then
     rollback
     exit 0
+  fi
+
+  if [ $1 == 'start' ]; then
+    FOREVER_CMD=start 
   fi
 fi
 
