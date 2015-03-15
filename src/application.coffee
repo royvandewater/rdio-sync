@@ -11,7 +11,8 @@ Account               = require './models/account'
 AccountsController    = require './controllers/accounts_controller'
 AccountsApiController = require './controllers/api/v1/accounts_controller'
 
-global.RDIO_TOKEN = [process.env['RDIO_KEY'], process.env['RDIO_SECRET']]
+global.RDIO_TOKEN = [process.env.RDIO_KEY, process.env.RDIO_SECRET]
+console.log "using RDIO_TOKEN:", JSON.stringify(global.RDIO_TOKEN)
 
 app = express()
 
