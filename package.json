@@ -1,8 +1,7 @@
 {
-  "name": "rdio-sync",
+  "name": "rdio-sync-api",
   "version": "1.0.0",
   "description": "Rdio Sync allows you to auto-sync all your favorite songs to your mobile phone.",
-  "main": "src/application.coffee",
   "scripts": {
     "start": "node server.js",
     "test": "mocha"

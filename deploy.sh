@@ -3,7 +3,7 @@ start=`date +%s`
 
 HOST="deploy@rdio-sync.com"
 REPO="https://github.com/royvandewater/rdio-sync"
-APP_DIR=/home/deploy/apps/rdio-sync
+APP_DIR=/home/deploy/apps/rdio-sync-api
 LOG_DIR=$APP_DIR/log
 CURRENT_DIR=$APP_DIR/current
 DESTINATION_DIR=$APP_DIR/releases/`date +%Y-%m-%d-%H-%M-%S`
@@ -68,7 +68,7 @@ if [[ ! -z $1 ]]; then
   fi
 
   if [ $1 == 'start' ]; then
-    FOREVER_CMD=start 
+    FOREVER_CMD=start
   fi
 fi
 
