@@ -1,4 +1,4 @@
-_    = require 'underscore'
+_    = require 'lodash'
 Rdio = require '../../lib/rdio'
 
 class RdioSync
