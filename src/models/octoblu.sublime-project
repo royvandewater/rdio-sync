@@ -4,7 +4,11 @@
     {
       "follow_symlinks": true,
       "path": "/Users/roy/Octoblu/octoblu",
-      "folder_exclude_patterns": ["node_modules"],
+      "folder_exclude_patterns": [
+        "node_modules",
+        "public/lib",
+        "dist",
+        "bower_components"],
       "tabSize": 4
     }
   ]
