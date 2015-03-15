@@ -1,14 +1,13 @@
 #!/bin/bash
 start=`date +%s`
 
-HOST="deploy@rdio-sync.com"
-REPO="https://github.com/royvandewater/rdio-sync"
+HOST="deploy@api.rdio-sync.com"
+REPO="https://github.com/royvandewater/rdio-sync-api"
 APP_DIR=/home/deploy/apps/rdio-sync-api
 LOG_DIR=$APP_DIR/log
 CURRENT_DIR=$APP_DIR/current
 DESTINATION_DIR=$APP_DIR/releases/`date +%Y-%m-%d-%H-%M-%S`
 NPM_BIN="node_modules/.bin"
-FOREVER_CMD=restart
 
 function locally_do(){
   COMMAND=$@
@@ -36,10 +35,10 @@ function rsync_project(){
 }
 
 function restart_forever(){
-  over_ssh_do "forever $FOREVER_CMD \
+  over_ssh_do "forever ${1} \
     -l $LOG_DIR/forever.log \
-    -o $LOG_DIR/rdio-sync.log \
-    -e $LOG_DIR/rdio-sync.log \
+    -o $LOG_DIR/rdio-sync-api.log \
+    -e $LOG_DIR/rdio-sync-api.log \
     --append \
     -p $APP_DIR/forever \
     -c 'npm start' \
@@ -53,7 +52,8 @@ function rollback(){
   PREVIOUS_DEPLOY=$(over_ssh_do "ls -t $APP_DIR/releases | head -n 2 | tail -n 1")
   over_ssh_do "ln -nsf $APP_DIR/releases/$PREVIOUS_DEPLOY $CURRENT_DIR"
   echo "Restarting forever"
-  restart_forever
+  restart_forever stop
+  restart_forever start
   echo "Moving bad release to /tmp/$LATEST_DEPLOY on remote server"
   over_ssh_do "mv $APP_DIR/releases/$LATEST_DEPLOY /tmp/$LATEST_DEPLOY"
   echo "Rolled back to: $PREVIOUS_DEPLOY"
@@ -83,20 +83,12 @@ over_ssh_do "git clone --depth=1 $REPO $DESTINATION_DIR"
 echo "npm install"
 over_ssh_do "cd $DESTINATION_DIR && npm install --production"
 
-echo "compiling remotely"
-over_ssh_do "cd $DESTINATION_DIR && $NPM_BIN/cake build"
-
-echo "gzipping assets"
-over_ssh_do "cd $DESTINATION_DIR/public && \
-  for f in \$(find . -type f); do \
-    gzip -9 -c \$f > \$f.gz; \
-  done"
-
 echo "linking current"
 over_ssh_do "ln -nsf $DESTINATION_DIR $CURRENT_DIR"
 
 echo "Restarting Forever"
-restart_forever
+restart_forever stop
+restart_forever start
 
 end=`date +%s`
 runtime=$((end-start))
