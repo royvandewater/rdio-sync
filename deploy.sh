@@ -19,9 +19,14 @@ function locally_do(){
 }
 
 function over_ssh_do(){
-  COMMAND=$@
+  COMMAND=$1
+  IGNORE_FAILURE=0
+  if [ "$2" == "ignore_failure" ]; then
+    IGNORE_FAILURE=1
+  fi
+
   ssh $HOST "$COMMAND"
-  if [ $? -ne 0 ]; then
+  if [ $? -ne 0 ] && [ $IGNORE_FAILURE -eq 0 ]; then
       echo "Failed to run: '$COMMAND'"
       exit 1
   fi
@@ -42,7 +47,7 @@ function restart_forever(){
     --append \
     -p $APP_DIR/forever \
     -c 'npm start' \
-    $CURRENT_DIR"
+    $CURRENT_DIR" ${2}
 }
 
 function rollback(){
@@ -52,7 +57,7 @@ function rollback(){
   PREVIOUS_DEPLOY=$(over_ssh_do "ls -t $APP_DIR/releases | head -n 2 | tail -n 1")
   over_ssh_do "ln -nsf $APP_DIR/releases/$PREVIOUS_DEPLOY $CURRENT_DIR"
   echo "Restarting forever"
-  restart_forever stop
+  restart_forever stop ignore_failure # ignore failure
   restart_forever start
   echo "Moving bad release to /tmp/$LATEST_DEPLOY on remote server"
   over_ssh_do "mv $APP_DIR/releases/$LATEST_DEPLOY /tmp/$LATEST_DEPLOY"
@@ -72,6 +77,12 @@ if [[ ! -z $1 ]]; then
   fi
 fi
 
+
+echo "Restarting Forever"
+restart_forever stop ignore_failure
+restart_forever start
+exit 0
+
 # Standard Deploy
 
 echo "creating directories"
@@ -87,7 +98,7 @@ echo "linking current"
 over_ssh_do "ln -nsf $DESTINATION_DIR $CURRENT_DIR"
 
 echo "Restarting Forever"
-restart_forever stop
+restart_forever stop ignore_failure
 restart_forever start
 
 end=`date +%s`

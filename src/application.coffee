@@ -51,5 +51,6 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
       return res.send 404 unless req.method == 'GET'
       res.sendfile path.join(__dirname, '../public/index.html')
 
-    server.listen 3003, ->
+    port = process.env.PORT ? 3004
+    server.listen process, ->
       console.log "Express server listening on port #{server.address().port}"
