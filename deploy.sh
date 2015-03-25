@@ -78,13 +78,7 @@ if [[ ! -z $1 ]]; then
 fi
 
 
-echo "Restarting Forever"
-restart_forever stop ignore_failure
-restart_forever start
-exit 0
-
 # Standard Deploy
-
 echo "creating directories"
 over_ssh_do "mkdir -p $APP_DIR/releases $APP_DIR/log $APP_DIR/forever"
 
