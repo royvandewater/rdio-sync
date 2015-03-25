@@ -5,7 +5,7 @@ errorhandler          = require 'errorhandler'
 http                  = require 'http'
 path                  = require 'path'
 orm                   = require 'orm'
-Cookies               = require 'cookies'
+cookies               = require 'cookies'
 Account               = require './models/account'
 AccountsController    = require './controllers/accounts_controller'
 AccountsApiController = require './controllers/api/v1/accounts_controller'
@@ -19,7 +19,7 @@ app = express()
 app.use morgan(format: 'dev')
 app.use body_parser()
 app.use express.static path.join(__dirname, '../public')
-app.use Cookies.express 'rdio_key'
+app.use cookies.express 'rdio_key'
 
 # development only
 app.use errorhandler() if 'development' == app.get('env')

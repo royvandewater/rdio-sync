@@ -50,6 +50,34 @@ function restart_forever(){
     $CURRENT_DIR" ${2}
 }
 
+function deploy(){
+  # Standard Deploy
+  echo "creating directories"
+  over_ssh_do "mkdir -p $APP_DIR/releases $APP_DIR/log $APP_DIR/forever"
+
+  echo "cloning git"
+  over_ssh_do "git clone --depth=1 $REPO $DESTINATION_DIR"
+
+  echo "npm install"
+  over_ssh_do "cd $DESTINATION_DIR && npm install --production"
+
+  echo "linking current"
+  over_ssh_do "ln -nsf $DESTINATION_DIR $CURRENT_DIR"
+
+  echo "Restarting Forever"
+  restart_forever stop ignore_failure
+  restart_forever start
+
+  end=`date +%s`
+  runtime=$((end-start))
+  echo "Deployed in ${runtime} seconds"
+}
+
+function restart(){
+  restart_forever stop ignore_failure
+  restart_forever start
+}
+
 function rollback(){
   echo "Rollback"
   echo "Pointing current to last deploy"
@@ -66,36 +94,14 @@ function rollback(){
 
 # Rollback
 
-if [[ ! -z $1 ]]; then
-  if [ $1 == 'rollback' ]; then
-    rollback
-    exit 0
-  fi
-
-  if [ $1 == 'start' ]; then
-    FOREVER_CMD=start
-  fi
+if [ "$1" == "restart" ]; then
+  restart
+  exit 0
 fi
 
+if [ "$1" == "rollback" ]; then
+  rollback
+  exit 0
+fi
 
-# Standard Deploy
-echo "creating directories"
-over_ssh_do "mkdir -p $APP_DIR/releases $APP_DIR/log $APP_DIR/forever"
-
-echo "cloning git"
-over_ssh_do "git clone --depth=1 $REPO $DESTINATION_DIR"
-
-echo "npm install"
-over_ssh_do "cd $DESTINATION_DIR && npm install --production"
-
-echo "linking current"
-over_ssh_do "ln -nsf $DESTINATION_DIR $CURRENT_DIR"
-
-echo "Restarting Forever"
-restart_forever stop ignore_failure
-restart_forever start
-
-end=`date +%s`
-runtime=$((end-start))
-echo "Deployed in ${runtime} seconds"
-
+deploy
