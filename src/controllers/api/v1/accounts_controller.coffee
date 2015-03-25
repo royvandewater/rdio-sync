@@ -3,7 +3,6 @@ Account = require '../../../models/account'
 class AccountsController
   constructor: (options={}) ->
     Account.table = options.account_table
-    @io = options.io
 
   show: (request, response) =>
     @_fetch_account request, (error, account) =>
@@ -28,7 +27,6 @@ class AccountsController
 
     Account.find_by_rdio_key rdio_key, (error, account) =>
       account?.on 'all', (the_event) =>
-        @io.emit 'account:update', {id: account.id, status: the_event}
 
       callback error, account
 

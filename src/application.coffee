@@ -32,8 +32,8 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
     server = http.Server(app)
 
     # Instantiate controllers
-    accounts_controller     = new AccountsController account_table: AccountTable, io: io
-    accounts_api_controller = new AccountsApiController account_table: AccountTable, io: io
+    accounts_controller     = new AccountsController account_table: AccountTable
+    accounts_api_controller = new AccountsApiController account_table: AccountTable
 
     # Register URLs
     app.get  '/', (request, response) ->
