@@ -36,18 +36,13 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
     accounts_api_controller = new AccountsApiController account_table: AccountTable
 
     # Register URLs
-    app.get  '/', (request, response) ->
-      response.sendfile path.join(__dirname, '../public/index.html')
+    app.get  '/', (request, response) -> response.send status: 'online'
 
     app.post '/accounts', accounts_controller.create
     app.get  '/accounts/:account_id/login', accounts_controller.login
 
     app.get  '/api/v1/account', accounts_api_controller.show
     app.put  '/api/v1/account', accounts_api_controller.update
-
-    app.use (req, res) ->
-      return res.send 404 unless req.method == 'GET'
-      res.sendfile path.join(__dirname, '../public/index.html')
 
     port = process.env.PORT ? 3004
     server.listen port, ->
