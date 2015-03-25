@@ -41,9 +41,7 @@ function rsync_project(){
 
 function restart_forever(){
   over_ssh_do "forever ${1} \
-    -l $LOG_DIR/forever.log \
-    -o $LOG_DIR/rdio-sync-api.log \
-    -e $LOG_DIR/rdio-sync-api.log \
+    -l $LOG_DIR/rdio-sync-api.log \
     --append \
     -p $APP_DIR/forever \
     -c 'npm start' \
