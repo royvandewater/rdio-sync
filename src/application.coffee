@@ -5,6 +5,7 @@ errorhandler          = require 'errorhandler'
 http                  = require 'http'
 path                  = require 'path'
 orm                   = require 'orm'
+cors                  = require 'cors'
 cookies               = require 'cookies'
 Account               = require './models/account'
 AccountsController    = require './controllers/accounts_controller'
@@ -20,6 +21,7 @@ app.use morgan(format: 'dev')
 app.use body_parser()
 app.use express.static path.join(__dirname, '../public')
 app.use cookies.express 'rdio_key'
+app.use cors origin: 'http://rdio-sync.com'
 
 # development only
 app.use errorhandler() if 'development' == app.get('env')
