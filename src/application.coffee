@@ -3,7 +3,6 @@ morgan                = require 'morgan'
 body_parser           = require 'body-parser'
 errorhandler          = require 'errorhandler'
 http                  = require 'http'
-socketio              = require 'socket.io'
 path                  = require 'path'
 orm                   = require 'orm'
 Cookies               = require 'cookies'
@@ -25,14 +24,12 @@ app.use Cookies.express 'rdio_key'
 # development only
 app.use errorhandler() if 'development' == app.get('env')
 
-
 orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
   throw err if err?
   AccountTable = database.define 'accounts', Account.schema
 
   database.sync (error) ->
     server = http.Server(app)
-    io     = socketio server
 
     # Instantiate controllers
     accounts_controller     = new AccountsController account_table: AccountTable, io: io
