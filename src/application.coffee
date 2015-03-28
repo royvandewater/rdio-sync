@@ -10,6 +10,7 @@ cookies               = require 'cookies'
 Account               = require './models/account'
 AccountsController    = require './controllers/accounts_controller'
 AccountsApiController = require './controllers/api/v1/accounts_controller'
+Config                = require '../config'
 
 # console.log "ENV", JSON.stringify(process.env, null, 2)
 global.RDIO_TOKEN = [process.env.RDIO_KEY, process.env.RDIO_SECRET]
@@ -21,7 +22,7 @@ app.use morgan(format: 'dev')
 app.use body_parser()
 app.use express.static path.join(__dirname, '../public')
 app.use cookies.express 'rdio_key'
-app.use cors origin: 'http://rdio-sync.com'
+app.use cors origin: Config.CLIENT_URL
 
 # development only
 app.use errorhandler() if 'development' == app.get('env')
@@ -40,6 +41,7 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
     # Register URLs
     app.get  '/', (request, response) -> response.send status: 'online'
 
+    app.get  '/accounts', accounts_controller.create
     app.post '/accounts', accounts_controller.create
     app.get  '/accounts/:account_id/login', accounts_controller.login
 
