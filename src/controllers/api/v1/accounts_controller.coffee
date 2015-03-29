@@ -26,8 +26,6 @@ class AccountsController
     rdio_key = request.cookies.get('rdio_key')
 
     Account.find_by_rdio_key rdio_key, (error, account) =>
-      account?.on 'all', (the_event) =>
-
       callback error, account
 
   _params: (request) =>
