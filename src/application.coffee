@@ -47,7 +47,6 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
 
     app.get  '/api/v1/account', accounts_api_controller.show
     app.put  '/api/v1/account', accounts_api_controller.update
-    app.post '/api/v1/account/sync', accounts_api_controller.sync
 
     port = process.env.PORT ? 3004
     server.listen port, ->
