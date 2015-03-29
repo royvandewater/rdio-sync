@@ -10,6 +10,7 @@ cookies               = require 'cookies'
 Account               = require './models/account'
 AccountsController    = require './controllers/accounts_controller'
 AccountsApiController = require './controllers/api/v1/accounts_controller'
+SessionsController    = require './controllers/sessions_controller'
 Config                = require '../config'
 
 # console.log "ENV", JSON.stringify(process.env, null, 2)
@@ -37,6 +38,7 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
     # Instantiate controllers
     accounts_controller     = new AccountsController account_table: AccountTable
     accounts_api_controller = new AccountsApiController account_table: AccountTable
+    sessions_controller     = new SessionsController
 
     # Register URLs
     app.get  '/', (request, response) -> response.send status: 'online'
@@ -44,6 +46,8 @@ orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
     app.get  '/accounts', accounts_controller.create
     app.post '/accounts', accounts_controller.create
     app.get  '/accounts/:account_id/login', accounts_controller.login
+
+    app.delete '/sessions', sessions_controller.destroy
 
     app.get  '/api/v1/account', accounts_api_controller.show
     app.put  '/api/v1/account', accounts_api_controller.update
