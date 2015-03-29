@@ -5,11 +5,17 @@ class AccountsController
     Account.table = options.account_table
 
   show: (request, response) =>
+    rdio_key = request.cookies.get('rdio_key')
+    return response.send(null, 401) unless rdio_key?
+
     @_fetch_account request, (error, account) =>
       return response.send(error, 404) if error?
       response.send account.toJSON()
 
   update: (request, response) =>
+    rdio_key = request.cookies.get('rdio_key')
+    return response.send(401) unless rdio_key?
+
     @_fetch_account request, (error, account) =>
       return response.send(error, 404) if error?
 
