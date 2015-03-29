@@ -4,6 +4,7 @@
   "description": "Rdio Sync allows you to auto-sync all your favorite songs to your mobile phone.",
   "scripts": {
     "start": "node server.js",
+    "sync": "node command.js",
     "test": "mocha"
   },
   "repository": {
