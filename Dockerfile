@@ -9,6 +9,6 @@ MAINTAINER Roy van de Water <roy.v.water@gmail.com>
 RUN git clone --depth=1 https://github.com/royvandewater/rdio-sync-api
 
 WORKDIR rdio-sync-api
-RUN npm install
+RUN npm --no-color install
 
 CMD ["npm", "start"]
