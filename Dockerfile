@@ -1,6 +1,6 @@
 FROM node:0.10-onbuild
 
-EXPOSE 4873
+EXPOSE 3004
 
 ENV PATH $PATH:/usr/local/bin
 
