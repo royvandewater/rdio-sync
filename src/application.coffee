@@ -13,7 +13,10 @@ AccountsApiController = require './controllers/api/v1/accounts_controller'
 SessionsController    = require './controllers/sessions_controller'
 Config                = require '../config'
 
-# console.log "ENV", JSON.stringify(process.env, null, 2)
+
+MYSQL_CONNECT_STRING = process.env.MYSQL_CONNECT_STRING ? "mysql://root:@localhost/rdio_sync"
+console.log "MYSQL_CONNECT_STRING:", MYSQL_CONNECT_STRING
+
 global.RDIO_TOKEN = [process.env.RDIO_KEY, process.env.RDIO_SECRET]
 console.log "using RDIO_TOKEN:", JSON.stringify(global.RDIO_TOKEN)
 
@@ -28,7 +31,7 @@ app.use cors origin: Config.CLIENT_URL, credentials: true
 # development only
 app.use errorhandler() if 'development' == app.get('env')
 
-orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
+orm.connect MYSQL_CONNECT_STRING, (err, database) ->
   throw err if err?
   AccountTable = database.define 'accounts', Account.schema
 
