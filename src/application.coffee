@@ -15,6 +15,14 @@ Config                = require '../config'
 
 
 MYSQL_CONNECT_STRING = process.env.MYSQL_CONNECT_STRING ? "mysql://root:@localhost/rdio_sync"
+if process.env.MYSQL_PORT_3306_TCP_ADDR && process.env.MYSQL_PORT_3306_TCP_PORT
+  user = 'root'
+  host = process.env.MYSQL_PORT_3306_TCP_ADDR
+  port = process.env.MYSQL_PORT_3306_TCP_PORT
+  password = process.env.MYSQL_ENV_MYSQL_ROOT_PASSWORD
+
+  MYSQL_CONNECT_STRING = "mysql://#{user}:#{password}@#{host}:#{port}/rdio_sync"
+
 console.log "MYSQL_CONNECT_STRING:", MYSQL_CONNECT_STRING
 
 global.RDIO_TOKEN = [process.env.RDIO_KEY, process.env.RDIO_SECRET]
