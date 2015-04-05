@@ -9,6 +9,6 @@ ENV NODE_ENV production
 ADD . rdio-sync-api
 
 WORKDIR rdio-sync-api
-RUN npm --no-color --force install
+RUN npm --no-color --force --production install
 
 CMD ["npm", "start"]
