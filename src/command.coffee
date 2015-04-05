@@ -1,9 +1,10 @@
 orm     = require 'orm'
 Account = require './models/account'
+Config  = require '../config'
 
 class Command
   establishDB: (callback=->) =>
-    orm.connect "mysql://root:@localhost/rdio_sync", (err, database) ->
+    orm.connect Config.MYSQL_CONNECT_STRING, (err, database) ->
       return callback error if error?
       Account.table = database.define 'accounts', Account.schema
 

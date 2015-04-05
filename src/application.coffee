@@ -14,19 +14,9 @@ SessionsController    = require './controllers/sessions_controller'
 Config                = require '../config'
 
 
-MYSQL_CONNECT_STRING = process.env.MYSQL_CONNECT_STRING ? "mysql://root:@localhost/rdio_sync"
-if process.env.MYSQL_PORT_3306_TCP_ADDR && process.env.MYSQL_PORT_3306_TCP_PORT
-  user = 'root'
-  host = process.env.MYSQL_PORT_3306_TCP_ADDR
-  port = process.env.MYSQL_PORT_3306_TCP_PORT
-  password = process.env.MYSQL_ENV_MYSQL_ROOT_PASSWORD
-
-  MYSQL_CONNECT_STRING = "mysql://#{user}:#{password}@#{host}:#{port}/rdio_sync"
-
-console.log "MYSQL_CONNECT_STRING:", MYSQL_CONNECT_STRING
-
 global.RDIO_TOKEN = [process.env.RDIO_KEY, process.env.RDIO_SECRET]
 console.log "using RDIO_TOKEN:", JSON.stringify(global.RDIO_TOKEN)
+console.log "MYSQL_CONNECT_STRING:", Config.MYSQL_CONNECT_STRING
 
 app = express()
 
@@ -39,7 +29,7 @@ app.use cors origin: Config.CLIENT_URL, credentials: true
 # development only
 app.use errorhandler() if 'development' == app.get('env')
 
-orm.connect MYSQL_CONNECT_STRING, (err, database) ->
+orm.connect Config.MYSQL_CONNECT_STRING, (err, database) ->
   throw err if err?
   AccountTable = database.define 'accounts', Account.schema
 
