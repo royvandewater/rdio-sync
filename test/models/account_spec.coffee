@@ -57,8 +57,8 @@ describe 'Account', ->
         rdio_secret: 'secret'
         number_of_tracks_to_sync: 3
         auto_sync: false
-        last_synced_at: new Date('2013-02-01')
-        sync_type: 'n/a'
+        last_synced_at: null
+        sync_type: 'playCount'
       @sut = new Account @attributes
 
     it 'should include the all the attributes', ->
@@ -68,4 +68,3 @@ describe 'Account', ->
       new_attributes = @sut.toJSON()
       new_attributes.username = 'modnar'
       expect(@sut.toJSON().username).to.equal 'random'
-
