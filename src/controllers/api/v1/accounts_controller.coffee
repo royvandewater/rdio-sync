@@ -10,6 +10,11 @@ class AccountsController
 
     @_fetch_account request, (error, account) =>
       return response.send(error, 404) if error?
+
+      unless account?
+        error = new Error 'account not found'
+        return response.send(error, 404)
+
       response.send account.toJSON()
 
   update: (request, response) =>
