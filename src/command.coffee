@@ -15,6 +15,8 @@ class Command
       throw error if error?
 
       global.RDIO_TOKEN = [process.env.RDIO_KEY, process.env.RDIO_SECRET]
+      console.log "using RDIO_TOKEN:", JSON.stringify(global.RDIO_TOKEN)
+      console.log "MYSQL_CONNECT_STRING:", Config.MYSQL_CONNECT_STRING
       Account.sync_all (error) =>
         console.error error if error?
         process.exit 0
